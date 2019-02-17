@@ -3,7 +3,6 @@
 
 
 #include <uavcan/uavcan.hpp>
-#include <uavcan/equipment/imu/AdisImu.hpp>
 
 #include<ros/ros.h>
 

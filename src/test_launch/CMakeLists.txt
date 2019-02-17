@@ -1,19 +1,15 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(uavcan_ros_bridge)
+project(test_launch)
 
-add_definitions("-std=c++11")
-set(UAVCAN_SRC_DIR ../libuavcan)
-set(UAVCAN_LIB	$ENV{UAVCAN_LIB})
+## Compile as C++11, supported in ROS Kinetic and newer
+# add_compile_options(-std=c++11)
 
+## Find catkin macros and libraries
+## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
+## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  geometry_msgs
-  message_generation
-  nav_msgs
   roscpp
-  rospy
-  seven_robotics_msgs
   std_msgs
-  tf
 )
 
 ## System dependencies are found with CMake's conventions
@@ -71,11 +67,10 @@ find_package(catkin REQUIRED COMPONENTS
 # )
 
 ## Generate added messages and services with any dependencies listed here
- generate_messages(
-   DEPENDENCIES
-   std_msgs
-	 sensor_msgs
-)
+# generate_messages(
+#   DEPENDENCIES
+#   std_msgs
+# )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -108,8 +103,8 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES uavcan_ros_bridge
-  CATKIN_DEPENDS geometry_msgs message_generation nav_msgs roscpp rospy seven_robotics_msgs std_msgs tf
+#  LIBRARIES test_launch
+  CATKIN_DEPENDS roscpp std_msgs
 #  DEPENDS system_lib
 )
 
@@ -120,19 +115,15 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-	include
-	${UAVCAN_SRC_DIR}/libuavcan/include
-	${UAVCAN_SRC_DIR}/libuavcan_drivers/linux/include
-	${UAVCAN_SRC_DIR}/libuavcan_drivers/posix/include
-	${UAVCAN_SRC_DIR}/libuavcan/include/dsdlc_generated/
+				# include
   ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/uavcan_ros_bridge.cpp
+#   src/${PROJECT_NAME}/test_launch.cpp
 # )
-find_library(UAVCAN_LIB uavcan required)
+
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
@@ -141,11 +132,7 @@ find_library(UAVCAN_LIB uavcan required)
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-add_executable(uavcan_ros_bridge
-								src/uavcanros_sensor_manager.cpp
-								src/uavcan_ros_bridge.cpp
-								src/platform_linux.cpp
-								)
+add_executable(${PROJECT_NAME} src/test_launch.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -158,13 +145,10 @@ add_executable(uavcan_ros_bridge
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(uavcan_ros_bridge
+target_link_libraries(${PROJECT_NAME}
    ${catkin_LIBRARIES}
-	 ${UAVCAN_LIB}
-	 rt
- )
+)
 
-add_dependencies(uavcan_ros_bridge seven_robotics_msgs)
 #############
 ## Install ##
 #############
@@ -192,7 +176,9 @@ add_dependencies(uavcan_ros_bridge seven_robotics_msgs)
 #   FILES_MATCHING PATTERN "*.h"
 #   PATTERN ".svn" EXCLUDE
 # )
-
+install(DIRECTORY
+				launch
+				DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
 ## Mark other files for installation (e.g. launch and bag files, etc.)
 # install(FILES
 #   # myfile1
@@ -200,16 +186,12 @@ add_dependencies(uavcan_ros_bridge seven_robotics_msgs)
 #   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 # )
 
-install(DIRECTORY
-				launch
-				DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
-
 #############
 ## Testing ##
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_uavcan_ros_bridge.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_test_launch.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

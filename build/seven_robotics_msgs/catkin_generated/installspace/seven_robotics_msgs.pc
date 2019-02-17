@@ -1,8 +1,0 @@
-prefix=/home/stach-z97/Seven_ROS/install
-
-Name: seven_robotics_msgs
-Description: Description of seven_robotics_msgs
-Version: 0.1.0
-Cflags: -I/home/stach-z97/Seven_ROS/install/include
-Libs: -L/home/stach-z97/Seven_ROS/install/lib 
-Requires: message_runtime
