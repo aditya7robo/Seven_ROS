@@ -1,0 +1,2 @@
+seven_robotics_msgs:uavcan_ros_bridge
+-DCATKIN_DEVEL_PREFIX=/home/stach-z97/Seven_ROS/devel -DCMAKE_INSTALL_PREFIX=/home/stach-z97/Seven_ROS/install -G Unix Makefiles
