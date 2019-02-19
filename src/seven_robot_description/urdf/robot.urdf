@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<robot name="seven">
+	<link name="base_link">
+		<visual>
+			<origin rpy="0 0 0" xyz="0 0 -0.125"/>
+			<geometry>
+				<box 0.550 0.470 0.250>
+			</geometry>
+		</visual>
+	</link>
+
+	<link name="front-left wheel">
+		<visual>
+			<origin rpy="0 -1.5707 0" xyz="0 0 0.0435"/>
+			<geometry>
+				<cylinder 0.130 0.087>
+			</geometry>
+		</visual>
+	</link>
+
+	<joint name="base-frontleft-wheel" type="revolute">
+		<origin xyz="0.268 0.172 0.070" rpy="0 0 0"/>
+		<parent link="base_link"/>
+		<child link="front-left-wheel"/>
+	</joint>
+		
+</robot>
