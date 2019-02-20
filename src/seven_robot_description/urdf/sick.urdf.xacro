@@ -35,8 +35,17 @@
 ****************************************************************************/
 -->
 
-<robot name="sick_lms2xx" xmlns:xacro="http:wiki.ros.org/wiki/xacro">
+<robot name="sick_lms2xx" xmlns:xacro="http://www.ros.org/wiki/xacro">
 	
-	<xacro:property name="sick_mount_offset" value="0.1611"/>
+	<xacro:property name="sick_collision_offset" value="0.1611"/>
 
+	<xacro:macro name="sick" params="prefix">
+		<link name="${prefix}_link"/>
+		<joint name="base_${prefix}_joint" type="fixed">
+			<origin xyz="0.3739 0 0.0980" rpy="0 0 0"/>
+			<parent link="base_link"/>
+			<child link="${prefix}_link"/>
+		</joint>
+	</xacro:macro>	
+	
 </robot>

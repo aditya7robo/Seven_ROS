@@ -34,10 +34,10 @@
 ****************************************************************************/
 -->
 
-<robot xmlns:xacro="http://www.wiki.ros.org/wiki/xacro" name="seven_wheel">
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="seven_wheel">
 
-	<xacro:macro name="seven_wheel" params="wheel_prefix *joint_pose">
-		<link name="${wheel_prefix}_wheel_link">
+	<xacro:macro name="seven_wheel" params="*joint_pose prefix">
+		<link name=" ${prefix}_link">
 			<inertial>
 				<mass value="1.900"/>
 				<origin xyz="0 0 0"/>
@@ -52,28 +52,29 @@
 			</visual>
 
 			<collision>
-				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<origin xyz="0 0 0" rpy="${PI/2} 0 0"/>
 				<geometry>
-			 		<cylinder radius="${wheel_radius}" length="${wheel_length}"/>
+			 		<cylinder radius="${wheel_radius}" length="${wheel_width}"/>
 				</geometry>
 			</collision>
 		</link>
 
-		<joint name="${wheel_prefix}_joint" type="continuous">
+		<joint name=" ${prefix}_joint" type="continuous">
 			<parent link="base_link"/>
-			<child link="$(wheel_prefix)_wheel_link"/>
+			<child link=" ${prefix}_link"/>
 			<xacro:insert_block name="joint_pose"/>
-			<axis xyz="0 1 0" rpy="0 0 0">
+			<axis xyz="0 0 1" rpy="0 0 0"/>
 		</joint>
 
-		<transmission name="${wheel_prefix}_wheeltrans" type="SimpleTransmission">
+		<transmission name=" ${prefix}_wheeltrans" type="SimpleTransmission">
 			<type>transmission_interface/SimpleTransmission</type>
-			<actuator name="${wheel_prefix}_motor">
+			<actuator name=" ${prefix}_motor">
 				<mechanicalReduction>2</mechanicalReduction>
 			</actuator>
-			<joint name="${wheel_prefix}_joint">
+			<joint name="$${prefix}_joint">
 				<hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
 			</joint>
 		</transmission>
+	
 	</xacro:macro>
 </robot>		

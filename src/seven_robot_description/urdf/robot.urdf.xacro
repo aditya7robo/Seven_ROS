@@ -33,13 +33,16 @@
 *                                
 ****************************************************************************/
 -->
-<robot name="seven" xmlns:xacro="http://wiki.ros.org/wiki/xacro">
+<robot name="seven" xmlns:xacro="http://www.ros.org/wiki/xacro">
 	
 	<xacro:property name="PI" value="3.14159"/>
 	<xacro:include filename="$(find seven_robot_description)/urdf/wheel.urdf.xacro"/>
 	<xacro:include filename="$(find seven_robot_description)/urdf/sick.urdf.xacro"/>
+	
+	<xacro:arg name="robot_namespace" default="/" />
 
-	<!--robot base dimensions: includes the top enclosure size and bearing size-->
+	<!--robot base dimensions: includes the top enclosure
+			and flange bearing offsets-->
 	<xacro:property name="base_size_x" value="0.6307"/>
 	<xacro:property name="base_size_y" value="0.5285"/>
 	<xacro:property name="base_size_z" value="0.3305"/>
@@ -57,22 +60,23 @@
 		<visual>
 			<origin rpy="0 0 0" xyz="0 0 0"/>
 			<geometry>
-				<mesh filename="package://seven_robot_descripiton/meshes/robot_base.dae"/>
+				<mesh filename="package://seven_robot_description/meshes/robot_base.dae"/>
 			</geometry>
 		</visual>
 
 		<collision>
-		<origin xyz="0 0 0" rpy="0 0 0">
+		<origin xyz="0 0 0" rpy="0 0 0"/>
 		<geometry>
-		<box size="${base_x_size + sick_mount_offset} ${base_size_y} ${base_size_z}">
+			<box size="${base_size_x + sick_collision_offset} ${base_size_y} ${base_size_z}"/>
 		</geometry>
 		</collision>
 	</link>
 
 	<link name="base_footprint"/>
 
+	<!--This is the footprint of our base which lies on the ground at all times-->
 	<joint name="base_footprint_joint" type="fixed">
-		<origin xyz="0 0 ${wheel_vertical_offset} - ${wheel_radius}" rpy="0 0 0"/>
+		<origin xyz="0 0 ${wheel_vertical_offset - wheel_radius}" rpy="0 0 0"/>
 		<parent link="base_link"/>
 		<child link="base_footprint"/>
 	</joint>
@@ -91,22 +95,39 @@
 		<parent link="base_link"/>
 		<child link="inertial_link"/>
 	</joint>
-
-	<!--wheel macros-->
-	<xacro:seven_wheel wheel_prefix="front_right">
-		<origin xyz="${wheel_base}/2 -${track_length/2 + wheel_width} ${wheel_vertical_offset}" rpy="0 0 0"/>	
-	</xacro:seven_wheel>
 	
-	<xacro:seven_wheel wheel_prefix="rear_right">
-		<origin xyz="-${wheel_base}/2 -${track_length/2 + wheel_width} ${wheel_vertical_offset}" rpy="0 0 0"/>	
-	</xacro:seven_wheel>
+	<link name="imu_link">	
+	</link>
+	
+	<joint name="base_imu_joint" type="fixed">
+		<origin xyz="0 0 0" rpy="0 0 0"/>
+		<parent link="base_link"/>
+		<child link="imu_link"/>
+	</joint>
+	
+	<link name="camera">
+	</link>
 
-	<xacro:seven_wheel wheel_prefix="front_left">
-		<origin xyz="${wheel_base}/2 ${track_length/2 + wheel_width} ${wheel_vertical_offset}" rpy="0 0 0"/>	
+	<joint name="base_camera_joint" type="fixed">
+		<origin xyz="0 0 0" rpy="0 0 0"/>
+		<parent link="base_link"/>
+		<child link="camera"/>
+	</joint>
+		
+	<xacro:sick prefix="mirror_origin"/>
+	
+	<!--wheel macros-->
+	<xacro:seven_wheel prefix="frontRight">
+		<origin xyz="${wheel_base/2} -${track_length/2 + wheel_width} ${wheel_vertical_offset}" rpy="${PI/2} 0 0"/>	
 	</xacro:seven_wheel>
-
-	<xacro:seven_wheel wheel_prefix="rear_left">
-		<origin xyz="-${wheel_base}/2 ${track_length/2 + wheel_width} ${wheel_vertical_offset}" rpy="0 0 0"/>	
+	<xacro:seven_wheel prefix="rearRight">
+		<origin xyz="-${wheel_base/2} -${track_length/2 + wheel_width} ${wheel_vertical_offset}" rpy="${PI/2} 0 0"/>	
+	</xacro:seven_wheel>
+	<xacro:seven_wheel prefix="frontLeft">
+		<origin xyz="${wheel_base/2} ${track_length/2 + wheel_width} ${wheel_vertical_offset}" rpy="-${PI/2} 0 0"/>	
+	</xacro:seven_wheel>
+	<xacro:seven_wheel prefix="rearLeft">
+		<origin xyz="-${wheel_base/2} ${track_length/2 + wheel_width} ${wheel_vertical_offset}" rpy="-${PI/2} 0 0"/>	
 	</xacro:seven_wheel>
 	
 </robot>
