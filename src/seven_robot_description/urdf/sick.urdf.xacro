@@ -37,14 +37,39 @@
 
 <robot name="sick_lms2xx" xmlns:xacro="http://www.ros.org/wiki/xacro">
 	
-	<xacro:property name="sick_collision_offset" value="0.1611"/>
+	<xacro:macro name="sick_mount" params="prefix *joint_pose">
+		<link name="${prefix}_sick_link">
+			<inertial>
+				<mass value="4.12"/>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+			</inertial>
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 ${PI}"/>
+				<geometry>
+					<mesh filename="package://seven_robot_description/meshes/sick.dae"/>
+				</geometry>
+			</visual>
+			<collision>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<box size="0.155 0.156 .210"/>
+				</geometry>
+			</collision>
+		</link>
+		
+		<joint name="${prefix}_sick_joint" type="fixed">
+			<parent link="${prefix}_link"/>
+			<child link="${prefix}_sick_link"/>
+			<xacro:insert_block name="joint_pose"/>
+		</joint>
 
-	<xacro:macro name="sick" params="prefix">
-		<link name="${prefix}_link"/>
-		<joint name="base_${prefix}_joint" type="fixed">
-			<origin xyz="0.3739 0 0.0980" rpy="0 0 0"/>
-			<parent link="base_link"/>
-			<child link="${prefix}_link"/>
+		<link name="laser_head"/>
+		<!--joint between the sensor body origin and laser head-->
+		<joint name="laser_head_joint" type="fixed">
+			<origin xyz="0.0930 0 -0.0295" rpy="0 0 0"/>
+			<parent link="${prefix}_sick_link"/>
+			<child link="laser_head"/>
 		</joint>
 	</xacro:macro>	
 	

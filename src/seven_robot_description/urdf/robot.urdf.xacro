@@ -34,6 +34,10 @@
 ****************************************************************************/
 -->
 <robot name="seven" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+	<xacro:arg name="laser_enabled" default="FALSE"/>
+	<xacro:arg name="laser_xyz" default="$(optenv SEVEN_LMS2XX_XYZ 0.2750 0.0 0.1267)"/>
+	<xacro:arg name="laser_rpy" default="$(optenv SEVEN_LMS2XX_RPY 0.0 0.0 0.0)"/>
 	
 	<xacro:property name="PI" value="3.14159"/>
 	<xacro:include filename="$(find seven_robot_description)/urdf/wheel.urdf.xacro"/>
@@ -58,16 +62,16 @@
 	
 	<link name="base_link">
 		<visual>
-			<origin rpy="0 0 0" xyz="0 0 0"/>
+			<origin rpy="0 0 ${PI}" xyz="0 0 0"/>
 			<geometry>
 				<mesh filename="package://seven_robot_description/meshes/robot_base.dae"/>
 			</geometry>
 		</visual>
 
 		<collision>
-		<origin xyz="0 0 0" rpy="0 0 0"/>
+		<origin xyz="0 0 ${base_size_z/2}" rpy="0 0 0"/>
 		<geometry>
-			<box size="${base_size_x + sick_collision_offset} ${base_size_y} ${base_size_z}"/>
+			<box size="${base_size_x} ${base_size_y} ${base_size_z}"/>
 		</geometry>
 		</collision>
 	</link>
@@ -96,11 +100,11 @@
 		<child link="inertial_link"/>
 	</joint>
 	
-	<link name="imu_link">	
+	<link name="imu_link">
 	</link>
 	
 	<joint name="base_imu_joint" type="fixed">
-		<origin xyz="0 0 0" rpy="0 0 0"/>
+		<origin xyz="0 0 0.250" rpy="0 0 0"/>
 		<parent link="base_link"/>
 		<child link="imu_link"/>
 	</joint>
@@ -114,7 +118,6 @@
 		<child link="camera"/>
 	</joint>
 		
-	<xacro:sick prefix="mirror_origin"/>
 	
 	<!--wheel macros-->
 	<xacro:seven_wheel prefix="frontRight">
@@ -130,4 +133,8 @@
 		<origin xyz="-${wheel_base/2} ${track_length/2 + wheel_width} ${wheel_vertical_offset}" rpy="-${PI/2} 0 0"/>	
 	</xacro:seven_wheel>
 	
+	<xacro:sick_mount prefix="base">
+			<origin xyz="$(arg laser_xyz)" rpy="$(arg laser_rpy)"/>
+	</xacro:sick_mount>
+
 </robot>
