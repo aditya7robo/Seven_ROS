@@ -1,0 +1,7 @@
+const uint8_t BATTERY_HEALTH_OK=0
+const uint8_t BATTERY_HEALTH_OVERTEMP=1
+const uint8_t BATTERY_HEALTH_UNDERTEMP=2
+const uint8_t BATTERY_HEALTH_OVERCURR=3
+const uint8_t BATTERY_HEALTH_FAIL=4
+
+uint8_t health
