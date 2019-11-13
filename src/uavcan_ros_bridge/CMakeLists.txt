@@ -107,7 +107,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
+  INCLUDE_DIRS include
 #  LIBRARIES uavcan_ros_bridge
   CATKIN_DEPENDS geometry_msgs message_generation nav_msgs roscpp rospy seven_robotics_msgs std_msgs tf
 #  DEPENDS system_lib
@@ -141,7 +141,7 @@ find_library(UAVCAN_LIB uavcan required)
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-add_executable(uavcan_ros_bridge
+add_executable(${PROJECT_NAME}
 								src/uavcanros_sensor_manager.cpp
 								src/uavcan_ros_bridge.cpp
 								src/platform_linux.cpp
@@ -158,13 +158,13 @@ add_executable(uavcan_ros_bridge
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(uavcan_ros_bridge
+target_link_libraries(${PROJECT_NAME}
    ${catkin_LIBRARIES}
 	 ${UAVCAN_LIB}
 	 rt
  )
 
-add_dependencies(uavcan_ros_bridge seven_robotics_msgs)
+add_dependencies(${PROJECT_NAME} seven_robotics_msgs)
 #############
 ## Install ##
 #############
@@ -180,18 +180,20 @@ add_dependencies(uavcan_ros_bridge seven_robotics_msgs)
 # )
 
 ## Mark executables and/or libraries for installation
-# install(TARGETS ${PROJECT_NAME} ${PROJECT_NAME}_node
+ install(TARGETS ${PROJECT_NAME}
 #   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-#   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 # )
 
 ## Mark cpp header files for installation
-# install(DIRECTORY include/${PROJECT_NAME}/
-#   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-#   FILES_MATCHING PATTERN "*.h"
-#   PATTERN ".svn" EXCLUDE
-# )
+ install(DIRECTORY include/${PROJECT_NAME}/
+   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+   FILES_MATCHING 
+	 PATTERN "*.hpp"
+	 PATTERN "*.h"
+   PATTERN ".svn" EXCLUDE
+)
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
 # install(FILES
