@@ -1,0 +1,3 @@
+[submodule "src/libuavcan"]
+	path = src/libuavcan
+	url = https://github.com/Tal-seven/libuavcan.git
