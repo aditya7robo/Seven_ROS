@@ -8,6 +8,7 @@ set(UAVCAN_LIB	$ENV{UAVCAN_LIB})
 find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   message_generation
+	dynamic_reconfigure 
   nav_msgs
   roscpp
   rospy
@@ -92,10 +93,9 @@ find_package(catkin REQUIRED COMPONENTS
 ##     and list every .cfg file to be processed
 
 ## Generate dynamic reconfigure parameters in the 'cfg' folder
-# generate_dynamic_reconfigure_options(
-#   cfg/DynReconf1.cfg
-#   cfg/DynReconf2.cfg
-# )
+ generate_dynamic_reconfigure_options(
+   cfg/robotParams.cfg 
+)
 
 ###################################
 ## catkin specific configuration ##
@@ -121,6 +121,7 @@ catkin_package(
 ## Your package locations should be listed before other locations
 include_directories(
 	include
+	${CMAKE_SOURCE_DIR}/include
 	${UAVCAN_SRC_DIR}/libuavcan/include
 	${UAVCAN_SRC_DIR}/libuavcan_drivers/linux/include
 	${UAVCAN_SRC_DIR}/libuavcan_drivers/posix/include
@@ -143,6 +144,7 @@ find_library(UAVCAN_LIB uavcan required)
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(${PROJECT_NAME}
 								src/uavcanros_sensor_manager.cpp
+								src/uavcanros_motor_controller.cpp
 								src/uavcan_ros_bridge.cpp
 								src/platform_linux.cpp
 								)
@@ -165,6 +167,7 @@ target_link_libraries(${PROJECT_NAME}
  )
 
 add_dependencies(${PROJECT_NAME} seven_robotics_msgs)
+add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}_gencfg)
 #############
 ## Install ##
 #############
@@ -181,8 +184,8 @@ add_dependencies(${PROJECT_NAME} seven_robotics_msgs)
 
 ## Mark executables and/or libraries for installation
  install(TARGETS ${PROJECT_NAME}
-#   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-#   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

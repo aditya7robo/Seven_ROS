@@ -1,0 +1,11 @@
+<launch>
+		<arg name="uavcan_id" default="20" />
+		
+		<node pkg="uavcan_ros_bridge" 
+					name="uavcan_ros_bridge"
+					type="uavcan_ros_bridge" 
+					respawn="false"
+					args="$(arg uavcan_id)">
+		</node>
+
+</launch>

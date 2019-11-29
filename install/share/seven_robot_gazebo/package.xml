@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>seven_robot_gazebo</name>
+  <version>0.1.0</version>
+  <description>The seven_robot_gazebo package</description>
+
+  <maintainer email="mtalha@sevenrobotics.in">Mohammed Talha</maintainer>
+
+
+  <license>MIT</license>
+
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>rospy</build_depend>
+  <build_export_depend>rospy</build_export_depend>
+  <exec_depend>rospy</exec_depend>
+
+
+  <!-- The export tag contains other, unspecified, tags -->
+  <export>
+    <!-- Other tools can request additional information be placed here -->
+
+  </export>
+</package>

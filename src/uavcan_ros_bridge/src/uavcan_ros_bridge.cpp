@@ -29,7 +29,7 @@ class UavcanRosBridge
 			sensor_mgr(node,bridge_nh)
 	{
 		node.setNodeID(node_id);
-		node.setName("adis.imu.subscriber");
+		node.setName("uavcan.ros.bridge");
 
 		const int node_res = node.start();
 		if(node_res < 0)

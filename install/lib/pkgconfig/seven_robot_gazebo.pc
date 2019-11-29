@@ -1,0 +1,8 @@
+prefix=/home/talha/SevenRobotics/Seven_ROS/install
+
+Name: seven_robot_gazebo
+Description: Description of seven_robot_gazebo
+Version: 0.1.0
+Cflags: 
+Libs: -L/home/talha/SevenRobotics/Seven_ROS/install/lib 
+Requires: rospy
