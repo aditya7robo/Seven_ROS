@@ -1,4 +1,0 @@
-<launch>
-	<node pkg="test_launch" name="test_launch" type="test_launch" respawn="false">
-	</node>
-</launch>
