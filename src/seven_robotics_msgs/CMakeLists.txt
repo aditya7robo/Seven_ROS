@@ -53,6 +53,12 @@ find_package(catkin REQUIRED COMPONENTS
  add_message_files(
    FILES
     AdisImu.msg
+		BatteryHealth.msg
+		BatteryType.msg
+		Battery.msg
+		MotorEmergencyStop.msg
+		PowerManagement.msg
+		MotorEncoder.msg 
 )
 
 ## Generate services in the 'srv' folder

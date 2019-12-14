@@ -35,22 +35,22 @@
 
 namespace uavcanMotor {
 
-void motorController::encoder_cb(const uavcan::equipment::encoder::encoder& msg) {
-			rosEncodermsg[0].timestamp = rosEncodermsg[1].timestamp = ros::Time::now();
-			rosEncodermsg[0].encoderID = rosEncoderID::left //left
-			rosEncodermsg[0].ticks = msg.ticks[0];
-			rosEncodermsg[0].totalCount = msg.totalCount[0];
-			rosEncodermsg[1].encoderID = rosEncoderID::right //left
-			rosEncodermsg[1].ticks = msg.ticks[1];
-			rosEncodermsg[1].totalCount = msg.totalCount[1];
+void motorController::encoder_cb(const uavcan::equipment::encoder::Encoder& msg) {
+			rosEncoderMsg[0].timestamp = rosEncoderMsg[1].timestamp = ros::Time::now();
+			rosEncoderMsg[0].encoderID = rosEncoderID::left; //left
+			rosEncoderMsg[0].ticks = msg.ticks[0];
+			rosEncoderMsg[0].totalCount = msg.totalCount[0];
+			rosEncoderMsg[1].encoderID = rosEncoderID::right; //left
+			rosEncoderMsg[1].ticks = msg.ticks[1];
+			rosEncoderMsg[1].totalCount = msg.totalCount[1];
 
 			if(pubLeftEncoder.isLatched())
 			{
-				pubLeftEncoder.publish(&rosEncodermsg[0]);
+				pubLeftEncoder.publish(rosEncoderMsg[0]);
 			}
 			if(pubRightEncoder.isLatched())
 			{
-				pubRightEncoder.publish(&rosEncodermsg[1]);
+				pubRightEncoder.publish(rosEncoderMsg[1]);
 			}
 }
 
@@ -58,5 +58,6 @@ void motorController::cmdCallback(const geometry_msgs::Twist& cmd) {
 	
 }
 
-void motorController::brake();
+void motorController::brake(){
+}
 }

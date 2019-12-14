@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(uavcan_ros_bridge)
 
 add_definitions("-std=c++11")
+
 set(UAVCAN_SRC_DIR ../libuavcan)
 set(UAVCAN_LIB	$ENV{UAVCAN_LIB})
 
@@ -148,7 +149,6 @@ add_executable(${PROJECT_NAME}
 								src/uavcan_ros_bridge.cpp
 								src/platform_linux.cpp
 								)
-
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use
@@ -168,6 +168,7 @@ target_link_libraries(${PROJECT_NAME}
 
 add_dependencies(${PROJECT_NAME} seven_robotics_msgs)
 add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}_gencfg)
+add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}_EXPORTED_TARGETS)
 #############
 ## Install ##
 #############

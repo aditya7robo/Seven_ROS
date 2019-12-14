@@ -15,17 +15,17 @@
 
 Header header
 
-BatteryType type
-BatteryHealth health
+#BatteryType type
+#BatteryHealth health
 
 bool 		 Charging
 
-uint32_t CapacityDesigned	#BQ34Z100 Design Capacity
-uint32_t CapacityFull			#Gas-gauging algorithm takes into account battery age and condition to adjust full capacity
-uint32_t RemainingCapacity	#mAh remaining capacity of the battery
+uint32 CapacityDesigned	#BQ34Z100 Design Capacity
+uint32 CapacityFull			#Gas-gauging algorithm takes into account battery age and condition to adjust full capacity
+uint32 RemainingCapacity	#mAh remaining capacity of the battery
 
-uint8_t  nCells	#no of series cells in the pack
+uint8  nCells	#no of series cells in the pack
 
-uint32_t Volts	#Current Battery Voltage
-int32_t  Amps		#Average current discharge
-int32_t  TempC	#Battery pack environment temperature in degree celsius
+uint32 Volts	#Current Battery Voltage
+int32  Amps		#Average current discharge
+int32  TempC	#Battery pack environment temperature in degree celsius

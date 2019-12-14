@@ -7,6 +7,7 @@
 #include<ros/ros.h>
 
 #include "uavcanros_sensor_manager.hpp"
+#include "uavcanros_motor_controller.hpp"
 
 extern uavcan::ICanDriver& getCanDriver();
 extern uavcan::ISystemClock& getSystemClock();
@@ -22,11 +23,12 @@ class UavcanRosBridge
 	ros::NodeHandle bridge_nh;
 	Node node;
 	UavcanRosSensorManager sensor_mgr;
-
+	uavcanMotor::motorController controller;
 	UavcanRosBridge(int id):
 			node_id{id},
 			node(getCanDriver(),getSystemClock()),
-			sensor_mgr(node,bridge_nh)
+			sensor_mgr(node,bridge_nh),
+			controller(node,bridge_nh)
 	{
 		node.setNodeID(node_id);
 		node.setName("uavcan.ros.bridge");

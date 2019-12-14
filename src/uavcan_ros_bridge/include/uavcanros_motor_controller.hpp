@@ -39,15 +39,17 @@
 #include <dynamic_reconfigure/server.h>
 #include <geometry_msgs/Twist.h>
 #include <uavcan/uavcan.hpp>
-#include <uavcan/equipment/actuator/cmd_rpm.hpp>
+#include <uavcan_ros_bridge/robotParamsConfig.h>
+#include <uavcan/equipment/actuator/CmdRpm.hpp>
+#include <uavcan/equipment/encoder/Encoder.hpp>
 #include <seven_robotics_msgs/MotorEncoder.h>
 
 
 namespace uavcanMotor {
 
 enum rosEncoderID: uint8_t {
-	left = 0x001;
-	right 0x100;
+	left = 0x001,
+	right= 0x010 
 };
 
 class motorController {
@@ -58,13 +60,13 @@ using Node = uavcan::Node<MemoryBlockPoolSize>;
 std::string topicName;
 ros::NodeHandle& _nh;
 Node& node;
-uavcan::Publisher<uavcan::equipment::actuator::cmd_rpm> velPub;
-uavcan::Subscribe<uavcan::equipment::encoder::encoder> encSub;
+uavcan::Publisher<uavcan::equipment::actuator::CmdRpm> velPub;
+uavcan::Subscriber<uavcan::equipment::encoder::Encoder> encSub;
 seven_robotics_msgs::MotorEncoder rosEncoderMsg[2];
 
 //robot parameters
 struct robotDynamicParams {
-double wheelradius=0;
+double wheelRadius=0;
 double wheelBase=0;
 
 double maxLinearVel=0;
@@ -78,9 +80,9 @@ robotDynamicParams params;
 //node parameters
 ros::Time _startTime;
 ros::Time _stopTime;
-ros_:Time _lastPublishTime;
+ros::Time _lastPublishTime;
 
-using reconfigureServer = dynamic_reconfigure::Server<robotParamsConfig>;
+using reconfigureServer = typename dynamic_reconfigure::Server<uavcan_ros_bridge::robotParamsConfig>;
 reconfigureServer server;
 
 
@@ -89,39 +91,39 @@ public:
 	ros::Subscriber sub;
 	ros::Publisher pubLeftEncoder;
 	ros::Publisher pubRightEncoder;
+	void encoder_cb(const uavcan::equipment::encoder::Encoder&);
+	void cmdCallback(const geometry_msgs::Twist& cmd);
+	void brake();
 
-	motorController(std::string topic="/cmd_vel",auto&& cb,ros::NodeHandle& nh,Node& n):topicName{topic},
-																																						_nh{nh},node{n},
+	motorController(Node& n,ros::NodeHandle& nh,const std::string topic="cmd_vel"):topicName{topic},
+																																						_nh{nh},node{n},velPub{n},encSub{n} 
 																																					
 	{
-		sub = _nh.Subscribe<geometry_msgs::Twist>(topic,_1,cmdCallback);
+		sub = _nh.subscribe(topic,10,&motorController::cmdCallback,this);
 		pubLeftEncoder = _nh.advertise<seven_robotics_msgs::MotorEncoder>("leftEncoder",50);
 		pubRightEncoder = _nh.advertise<seven_robotics_msgs::MotorEncoder>("rightEncoder",50);
 		
-		_nh.getParam("wheelradius",params.wheelradius);
-		_nh.getParam("wheelbase",params.wheelbase);
+		_nh.getParam("wheelRadius",params.wheelRadius);
+		_nh.getParam("wheelBase",params.wheelBase);
 		_nh.getParam("maxLinearVel",params.maxLinearVel);
 		_nh.getParam("maxAngularVel",params.maxAngularVel);
 
 		/*only used during testing*/
-		_nh.setParam("motorfeedBack",False);
-
+		_nh.setParam("motorfeedBack",false);
 		_nh.getParam("motorfeedBack",params.feedBack);
-		if(const int sub_res = encSub.start([&](const uavcan::ReceivedDataStructure<uavcan::equipment::encoder::encoder>& msg){
-														this->encoder_cb(msg)};);sub_res < 0)
+		const int sub_res = encSub.start([&](const uavcan::ReceivedDataStructure<uavcan::equipment::encoder::Encoder>& msg){
+														this->encoder_cb(msg);});		
+		if(sub_res < 0)
 		{
 			std::cout << "Failed to start uavcan encoder Subscriber\n";
 		}
-		if(const int pub_res = velPub.init();pub_res < 0)
+		const int pub_res = velPub.init();
+		if(pub_res < 0)
 		{
 			std::cout << "Failed to start uavcan velocity Publisher\n";
 		}
 	}
 	
-	void encoder_cb(const uavcan::equipment::encoder::encoder&);
-	void cmdCallback(const geometry_msgs::Twist& cmd);
-	void brake();
-
 };
 
 }
