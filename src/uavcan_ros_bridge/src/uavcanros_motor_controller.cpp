@@ -37,12 +37,14 @@ namespace uavcanMotor {
 
 void motorController::encoder_cb(const uavcan::equipment::encoder::Encoder& msg) {
 			rosEncoderMsg[0].timestamp = rosEncoderMsg[1].timestamp = ros::Time::now();
-			rosEncoderMsg[0].encoderID = rosEncoderID::left; //left
+			rosEncoderMsg[0].encoderID = rosEncoderID::right; //right
 			rosEncoderMsg[0].ticks = msg.ticks[0];
 			rosEncoderMsg[0].totalCount = msg.totalCount[0];
-			rosEncoderMsg[1].encoderID = rosEncoderID::right; //left
+			rosEncoderMsg[1].encoderID = rosEncoderID::left; //left
 			rosEncoderMsg[1].ticks = msg.ticks[1];
 			rosEncoderMsg[1].totalCount = msg.totalCount[1];
+
+			std::cout << "received Encoder MSG\n";
 
 			if(pubLeftEncoder.isLatched())
 			{
@@ -58,6 +60,29 @@ void motorController::cmdCallback(const geometry_msgs::Twist& cmd) {
 	
 }
 
-void motorController::brake(){
+void motorController::configCallback(const seven_robotics_msgs::Config& conf)	{
+	if(conf.enableControl)
+	{
+		uavcan::control::config::Config::Request req;
+		req.enableControl = true;
+		const int res = configClient.call(nParams.config_server_ID, req);
+		if(res < 0)
+		{
+			std::cout << "config Client call failed\n";
+		}
+	}
+}
+
+void motorController::brakeCallback(const seven_robotics_msgs::Brake& brakeReq){
+	if(brakeReq.brake)
+	{
+		uavcan::control::config::Brake::Request req;
+		req.brake = true;
+		const int res = brakeClient.call(nParams.brake_server_ID,req);
+		if(res<0)
+		{
+			std::cout << "Brake Service Request  failed\n";
+		}
+	}
 }
 }

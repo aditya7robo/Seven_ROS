@@ -56,6 +56,8 @@ find_package(catkin REQUIRED COMPONENTS
 		BatteryHealth.msg
 		BatteryType.msg
 		Battery.msg
+		Config.msg
+		Brake.msg
 		MotorEmergencyStop.msg
 		PowerManagement.msg
 		MotorEncoder.msg 

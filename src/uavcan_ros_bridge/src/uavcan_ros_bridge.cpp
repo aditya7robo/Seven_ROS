@@ -59,7 +59,7 @@ int main(int argc,char** argv)
 		std::cerr << "Usage: "<<argv[0]<< " <uavcan-id>" << std::endl;
 		return 1;
 	}
-
+	std::cout << "I am a new node\n";
 	ros::init(argc,argv,"uavcanRosNode");
 	UavcanRosBridge bridge(std::stoi(argv[1]));
 	bridge.spin();

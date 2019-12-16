@@ -40,10 +40,14 @@
 #include <geometry_msgs/Twist.h>
 #include <uavcan/uavcan.hpp>
 #include <uavcan_ros_bridge/robotParamsConfig.h>
+
 #include <uavcan/equipment/actuator/CmdRpm.hpp>
 #include <uavcan/equipment/encoder/Encoder.hpp>
+#include <uavcan/control/config/Config.hpp>
+#include <uavcan/control/config/Brake.hpp>
 #include <seven_robotics_msgs/MotorEncoder.h>
-
+#include <seven_robotics_msgs/Config.h>
+#include <seven_robotics_msgs/Brake.h>
 
 namespace uavcanMotor {
 
@@ -60,10 +64,18 @@ using Node = uavcan::Node<MemoryBlockPoolSize>;
 std::string topicName;
 ros::NodeHandle& _nh;
 Node& node;
+
 uavcan::Publisher<uavcan::equipment::actuator::CmdRpm> velPub;
 uavcan::Subscriber<uavcan::equipment::encoder::Encoder> encSub;
-seven_robotics_msgs::MotorEncoder rosEncoderMsg[2];
 
+uavcan::ServiceClient<uavcan::control::config::Brake> brakeClient;
+uavcan::ServiceClient<uavcan::control::config::Config> configClient;
+
+seven_robotics_msgs::MotorEncoder rosEncoderMsg[2];
+struct nodeParams {
+int brake_server_ID;
+int config_server_ID;
+};
 //robot parameters
 struct robotDynamicParams {
 double wheelRadius=0;
@@ -77,6 +89,7 @@ bool feedBack=false;
 };
 
 robotDynamicParams params;
+nodeParams nParams;
 //node parameters
 ros::Time _startTime;
 ros::Time _stopTime;
@@ -89,20 +102,63 @@ reconfigureServer server;
 
 public:
 	ros::Subscriber sub;
+	ros::Subscriber configSub;
+  ros::Subscriber brakeSub;
+
 	ros::Publisher pubLeftEncoder;
 	ros::Publisher pubRightEncoder;
+
 	void encoder_cb(const uavcan::equipment::encoder::Encoder&);
 	void cmdCallback(const geometry_msgs::Twist& cmd);
-	void brake();
+	void configCallback(const seven_robotics_msgs::Config& configReq);
+	void brakeCallback(const seven_robotics_msgs::Brake& brakeReq);
+
 
 	motorController(Node& n,ros::NodeHandle& nh,const std::string topic="cmd_vel"):topicName{topic},
-																																						_nh{nh},node{n},velPub{n},encSub{n} 
+																																						_nh{nh},node{n},velPub{n},encSub{n},
+																																					 brakeClient{n},configClient{n}	
 																																					
 	{
+
+		const int config_res = configClient.init();
+		if(config_res < 0)
+		{
+			std::cout << "Failed to initialize config Client\n";
+		}
+
+		configClient.setCallback([](const uavcan::ServiceCallResult<uavcan::control::config::Config>& callResult){
+			if(callResult.isSuccessful())
+			{
+				std::cout << "Configuration loaded Successfully\n";
+			}
+			else
+			{
+				std::cout << "FAiled to load configuration\n";
+			}
+		});
+		
+		configClient.setRequestTimeout(uavcan::MonotonicDuration::fromMSec(200));
+
+		const int brake_res = brakeClient.init();
+		if(brake_res < 0)
+		{
+			std::cout << "Failed to initialize brake client\n";
+		}
+
+		brakeClient.setCallback([](const uavcan::ServiceCallResult<uavcan::control::config::Brake>& callResult){if(callResult.isSuccessful()){
+										std::cout << "Brake call succeeded\n";}});
+		brakeClient.setRequestTimeout(uavcan::MonotonicDuration::fromMSec(100));
+		
+		configSub = _nh.subscribe("robotConfig",10,&motorController::configCallback,this);
 		sub = _nh.subscribe(topic,10,&motorController::cmdCallback,this);
+
+		brakeSub = _nh.subscribe("robotBrake",10,&motorController::brakeCallback,this);
+
 		pubLeftEncoder = _nh.advertise<seven_robotics_msgs::MotorEncoder>("leftEncoder",50);
 		pubRightEncoder = _nh.advertise<seven_robotics_msgs::MotorEncoder>("rightEncoder",50);
 		
+		_nh.getParam("brake_server_ID",nParams.brake_server_ID);
+		_nh.getParam("config_server_ID",nParams.config_server_ID);
 		_nh.getParam("wheelRadius",params.wheelRadius);
 		_nh.getParam("wheelBase",params.wheelBase);
 		_nh.getParam("maxLinearVel",params.maxLinearVel);
