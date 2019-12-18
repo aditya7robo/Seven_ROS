@@ -1,3 +1,9 @@
 [submodule "src/libuavcan"]
 	path = src/libuavcan
 	url = https://github.com/Tal-seven/libuavcan.git
+[submodule "src/seven_robotics_msgs"]
+	path = src/seven_robotics_msgs
+	url = https://github.com/Tal-seven/seven_robotics_msgs.git
+[submodule "src/uavcanRosBridge"]
+	path = src/uavcanRosBridge
+	url = https://github.com/Tal-seven/uavcanRosBridge
