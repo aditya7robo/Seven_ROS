@@ -1,3 +1,0 @@
-time timestamp
-
-float32[3] velocity # rad/s
