@@ -7,3 +7,4 @@
 [submodule "src/uavcanRosBridge"]
 	path = src/uavcanRosBridge
 	url = https://github.com/Tal-seven/uavcanRosBridge
+	master = master
