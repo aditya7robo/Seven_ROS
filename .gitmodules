@@ -10,7 +10,7 @@
 	master = master
 [submodule "src/sicktoolbox_wrapper"]
 	path = src/sicktoolbox_wrapper
-	url = /home/talha/SevenRobotics/Seven_ROS/sicktoolbox_wrapper
+	url = https://github.com/Tal-seven/lms_toolbox_wrapper
 [submodule "src/sicktoolbox"]
 	path = src/sicktoolbox
-	url = /home/talha/SevenRobotics/Seven_ROS/sicktoolbox
+	url = https://github.com/Tal-seven/lms_toolbox
