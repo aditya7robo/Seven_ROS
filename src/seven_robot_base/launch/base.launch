@@ -17,7 +17,7 @@
 	
 	<group>
 
-					<machine name="udooqdl" address="udooqdl" user="root" env-loader="/home/root/env_loader_udooqdl.sh" default="true"/>
+					<machine name="udooqdl" address="udooqdl" user="root" env-loader="/home/root/Seven_ROS/env_loader_udooqdl.sh" default="true"/>
 		<include file="$(find uavcan_ros_bridge)/launch/uavcan_ros_bridge.launch"/>
 	</group>
 	
