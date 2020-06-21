@@ -1,0 +1,109 @@
+frequency: 30
+
+sensor_timeout: 0.1
+
+print_diagnostics: true
+
+two_d_mode: false
+
+debug: true
+
+debug_out_file: ${HOME}/rosDebug/ekf/ekf_debug.txt
+
+publish_tf: true
+
+map_frame: map
+odom_frame: odom
+base_link_frame: base_link
+world_frame: odom
+
+odom0: /uavcanRosBridge/uavcan_ros_bridge/odom
+
+#Our velocity estimates are better than pos
+odom0_config: [false,false,false,
+               false,false,false,
+               true,true,false,
+               false,false,true,
+               false,false,false]
+
+odom0_queue_size: 10
+
+odom0_nodelay: true
+
+odom0_differential: false
+
+
+imu0: /uavcanRosBridge/uavcan_ros_bridge/Imu
+
+imu0_config: [false,false,false,
+              true,true,true,
+              false,false,false,
+              true,true,true,
+              true,true,true] 
+
+imu0_nodelay: true
+
+imu0_differential: false
+
+imu0_queue_size: 10
+
+imu0_remove_gravitational_acceleration: true
+
+#during the prediction step if no input for acceleration is available. The velocity at time t+1 is the same as velocity at time t.
+#The corrected velocity is then a weighted average of old velocity and new velocity. If the robot is rotating this could lead to 
+#slow convergence to true state. Enabling the below param allows the filter to check if for an acceleration control command issued
+#at the prediction step and use that as an input for prediction. 
+use_control: true
+
+stamped_control: false
+
+control_timeout: 0.2
+
+# which velocities are being controlled  [vx,vy,vz,wx,wy,wz]
+control_config: [true,false,false,false,false,true]
+
+# [ADVANCED] The process noise covariance matrix can be difficult to tune, and can vary for each application, so it is
+# exposed as a configuration parameter. This matrix represents the noise we add to the total error after each
+# prediction step. The better the omnidirectional motion model matches your system, the smaller these values can be.
+# However, if users find that a given variable is slow to converge, one approach is to increase the
+# process_noise_covariance diagonal value for the variable in question, which will cause the filter's predicted error
+# to be larger, which will cause the filter to trust the incoming measurement more during correction. The values are
+# ordered as x, y, z, roll, pitch, yaw, vx, vy, vz, vroll, vpitch, vyaw, ax, ay, az. Defaults to the matrix below if
+# unspecified.
+process_noise_covariance: [0.05, 0,    0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
+                           0,    0.05, 0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
+                           0,    0,    0.06, 0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
+                           0,    0,    0,    0.03, 0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
+                           0,    0,    0,    0,    0.03, 0,    0,     0,     0,    0,    0,    0,    0,    0,    0,
+                           0,    0,    0,    0,    0,    0.06, 0,     0,     0,    0,    0,    0,    0,    0,    0,
+                           0,    0,    0,    0,    0,    0,    0.025, 0,     0,    0,    0,    0,    0,    0,    0,
+                           0,    0,    0,    0,    0,    0,    0,     0.025, 0,    0,    0,    0,    0,    0,    0,
+                           0,    0,    0,    0,    0,    0,    0,     0,     0.04, 0,    0,    0,    0,    0,    0,
+                           0,    0,    0,    0,    0,    0,    0,     0,     0,    0.01, 0,    0,    0,    0,    0,
+                           0,    0,    0,    0,    0,    0,    0,     0,     0,    0,    0.01, 0,    0,    0,    0,
+                           0,    0,    0,    0,    0,    0,    0,     0,     0,    0,    0,    0.02, 0,    0,    0,
+                           0,    0,    0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    0.01, 0,    0,
+                           0,    0,    0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0.01, 0,
+                           0,    0,    0,    0,    0,    0,    0,     0,     0,    0,    0,    0,    0,    0,    0.015]
+
+# [ADVANCED] This represents the initial value for the state estimate error covariance matrix. Setting a diagonal
+# value (variance) to a large value will result in rapid convergence for initial measurements of the variable in
+# question. Users should take care not to use large values for variables that will not be measured directly. The values
+# are ordered as x, y, z, roll, pitch, yaw, vx, vy, vz, vroll, vpitch, vyaw, ax, ay, az. Defaults to the matrix below
+#if unspecified.
+initial_estimate_covariance: [1e-9, 0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                              0,    1e-9, 0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                              0,    0,    1e-9, 0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                              0,    0,    0,    1e-9, 0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                              0,    0,    0,    0,    1e-9, 0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                              0,    0,    0,    0,    0,    1e-9, 0,    0,    0,    0,     0,     0,     0,    0,    0,
+                              0,    0,    0,    0,    0,    0,    1e-9, 0,    0,    0,     0,     0,     0,    0,    0,
+                              0,    0,    0,    0,    0,    0,    0,    1e-9, 0,    0,     0,     0,     0,    0,    0,
+                              0,    0,    0,    0,    0,    0,    0,    0,    1e-9, 0,     0,     0,     0,    0,    0,
+                              0,    0,    0,    0,    0,    0,    0,    0,    0,    1e-9,  0,     0,     0,    0,    0,
+                              0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     1e-9,  0,     0,    0,    0,
+                              0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     1e-9,  0,    0,    0,
+                              0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     1e-9, 0,    0,
+                              0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    1e-9, 0,
+                              0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    1e-9]
+
