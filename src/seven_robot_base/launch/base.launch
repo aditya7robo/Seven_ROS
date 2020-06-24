@@ -9,15 +9,16 @@
 	</include>
 
 	<include file="$(find seven_robot_localization)/launch/seven_robot_localization.launch"/>
-	
+	<node pkg="joy" type="joy_node" name="joy_node"/>
+	<node pkg="teleop_twist_joy" type="teleop_node" name="teleop_twist_joy"/>
+
 	<group>
-					<machine name="sevenPC1" address="sevenPC1" user="talha" env-loader="/home/talha/SevenRobotics/Seven_ROS/env_loader_sevenPC1.sh" default="true"/>
+		<machine name="sevenPC1" address="sevenPC1" user="talha" env-loader="/home/talha/SevenRobotics/Seven_ROS/env_loader_sevenPC1.sh" default="true"/>
 		<node name="rviz" pkg="rviz" type="rviz" args="-d $(find seven_robot_description)/rviz/default.rviz"/>
 	</group>
 	
 	<group>
-
-					<machine name="udooqdl" address="udooqdl" user="root" env-loader="/home/root/Seven_ROS/env_loader_udooqdl.sh" default="true"/>
+		<machine name="udooqdl" address="udooqdl" user="root" env-loader="/home/root/Seven_ROS/env_loader_udooqdl.sh" default="true"/>
 		<include file="$(find uavcan_ros_bridge)/launch/uavcan_ros_bridge.launch"/>
 	</group>
 	
