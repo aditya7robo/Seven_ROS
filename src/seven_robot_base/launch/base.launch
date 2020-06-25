@@ -3,10 +3,12 @@
 	<arg name="laser_enabled" default="$(optenv SEVEN_LMS_ENABLED true)"/>	
 	<arg name="realsense_enabled" default="$(optenv SEVEN_REALSENSE_ENABLED true)"/>
 	<arg name="kinect_enabled" default="$(optenv SEVEN_KINECT_ENABLED true)"/>
+	<arg name="uavcanNs" default="/uavcanRosBridge"/>
 
 	<include file="$(find seven_robot_description)/launch/description.launch">
 		<arg name="laser_enabled" default="$(arg laser_enabled)"/>
 	</include>
+	
 
 	<include file="$(find seven_robot_localization)/launch/seven_robot_localization.launch"/>
 	<node pkg="joy" type="joy_node" name="joy_node"/>
@@ -16,10 +18,13 @@
 		<machine name="sevenPC1" address="sevenPC1" user="talha" env-loader="/home/talha/SevenRobotics/Seven_ROS/env_loader_sevenPC1.sh" default="true"/>
 		<node name="rviz" pkg="rviz" type="rviz" args="-d $(find seven_robot_description)/rviz/default.rviz"/>
 	</group>
-	
+
 	<group>
 		<machine name="udooqdl" address="udooqdl" user="root" env-loader="/home/root/Seven_ROS/env_loader_udooqdl.sh" default="true"/>
-		<include file="$(find uavcan_ros_bridge)/launch/uavcan_ros_bridge.launch"/>
+		<include file="$(find uavcan_ros_bridge)/launch/uavcan_ros_bridge.launch">
+			<arg name="uavcanNs" default="$(arg uavcanNs)"/>
+			<arg name="laser_enabled" default="$(arg laser_enabled)"/>
+		</include>
 	</group>
 	
 </launch>
