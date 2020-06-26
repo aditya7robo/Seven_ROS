@@ -16,7 +16,7 @@
 
 	<group>
 		<machine name="sevenPC1" address="sevenPC1" user="talha" env-loader="/home/talha/SevenRobotics/Seven_ROS/env_loader_sevenPC1.sh" default="true"/>
-		<node name="rviz" pkg="rviz" type="rviz" args="-d $(find seven_robot_description)/rviz/default.rviz"/>
+		<node name="rviz" pkg="rviz" type="rviz" args="-d $(find seven_robot_description)/rviz/description.rviz"/>
 	</group>
 
 	<group>
