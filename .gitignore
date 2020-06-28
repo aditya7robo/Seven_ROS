@@ -3,3 +3,5 @@ devel/
 install/
 .catkin_tools/
 *.out
+*.pdf
+*.gv
