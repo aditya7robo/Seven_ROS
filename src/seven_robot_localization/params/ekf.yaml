@@ -19,8 +19,8 @@ world_frame: odom
 
 odom0: /odom
 
-#Our velocity estimates are better than pos
-odom0_config: [false,false,false,
+#Our velocity estimates are better than pos but put z to zero all the time
+odom0_config: [false,false,true,
                false,false,false,
                true,true,false,
                false,false,true,
