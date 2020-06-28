@@ -4,7 +4,7 @@
 	<arg name="realsense_enabled" default="$(optenv SEVEN_REALSENSE_ENABLED true)"/>
 	<arg name="kinect_enabled" default="$(optenv SEVEN_KINECT_ENABLED true)"/>
 	<arg name="uavcanNs" default="/uavcanRosBridge"/>
-
+	<arg name="publishuavcanTf" default="false"/>
 
 
 	<include file="$(find seven_robot_localization)/launch/seven_robot_localization.launch"/>
@@ -23,6 +23,7 @@
 		<include file="$(find uavcan_ros_bridge)/launch/uavcan_ros_bridge.launch">
 			<arg name="uavcanNs" default="$(arg uavcanNs)"/>
 			<arg name="laser_enabled" default="$(arg laser_enabled)"/>
+			<arg name="publishuavcanTf" default="$(arg publishuavcanTf)"/>
 		</include>
 	</group>
 	
