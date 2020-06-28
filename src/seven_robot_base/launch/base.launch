@@ -5,7 +5,7 @@
 	<arg name="kinect_enabled" default="$(optenv SEVEN_KINECT_ENABLED true)"/>
 	<arg name="uavcanNs" default="/uavcanRosBridge"/>
 	<arg name="publishuavcanTf" default="false"/>
-
+	<arg name="enableMotors" default="true"/>
 
 	<include file="$(find seven_robot_localization)/launch/seven_robot_localization.launch"/>
 	<node pkg="joy" type="joy_node" name="joy_node"/>
@@ -27,6 +27,7 @@
 			<arg name="uavcanNs" default="$(arg uavcanNs)"/>
 			<arg name="laser_enabled" default="$(arg laser_enabled)"/>
 			<arg name="publishuavcanTf" default="$(arg publishuavcanTf)"/>
+			<arg name="enableMotors" default="$(arg enableMotors)"/>
 		</include>
 	</group>
 	
