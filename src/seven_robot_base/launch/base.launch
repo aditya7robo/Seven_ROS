@@ -7,7 +7,10 @@
 	<arg name="publishuavcanTf" default="false"/>
 	<arg name="enableMotors" default="true"/>
 
-	<include file="$(find seven_robot_localization)/launch/seven_robot_localization.launch"/>
+	<include file="$(find seven_robot_localization)/launch/seven_robot_localization.launch">
+	 <arg name="realsense_enabled" default="$(arg realsense_enabled)"/>
+	</include>
+	
 	<node pkg="joy" type="joy_node" name="joy_node"/>
 	<node pkg="teleop_twist_joy" type="teleop_node" name="teleop_twist_joy"/>
 	
