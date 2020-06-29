@@ -11,3 +11,6 @@ imuDiagonalCovariance : [99999.0,99999.0,99999.0,
                          0.019137,0.019137,0.019137]
 
 closeLoopControl: true
+imuXInverted: true
+imuYInverted: false
+imuZInverted: false
