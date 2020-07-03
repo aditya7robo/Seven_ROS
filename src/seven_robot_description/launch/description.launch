@@ -4,17 +4,17 @@
 	<arg name="robot_namespace" default="/"/>
 	<arg name="laser_enabled"/>
 	<param name="robot_description" command="$(find xacro)/xacro '$(find seven_robot_description)/urdf/robot.urdf.xacro'
-	--inorder
-	robot_namespace:=$(arg robot_namespace)
-	laser_enabled:=$(arg laser_enabled)
-	"/>
+	 --inorder
+	 robot_namespace:=$(arg robot_namespace)
+	 laser_enabled:=$(arg laser_enabled)"/>
 
 	
 	<node name="joint_state_publisher" type="joint_state_publisher" pkg="joint_state_publisher">
-					<rosparam  param="source_list">["joint_states"]</rosparam>
-					<param name="use_gui" value="false"/>
+	 <rosparam  param="source_list">["joint_states"]</rosparam>
+	 <param name="use_gui" value="false"/>
 	</node>	
-		<node name="robot_state_publisher" type="robot_state_publisher" pkg="robot_state_publisher"/>
+    
+	<node name="robot_state_publisher" type="robot_state_publisher" pkg="robot_state_publisher"/>
 	
 
 
