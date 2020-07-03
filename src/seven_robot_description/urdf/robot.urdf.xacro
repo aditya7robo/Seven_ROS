@@ -55,14 +55,14 @@
 	<!--wheel mounting includes offsets induced by bearings-->
 	<xacro:property name="wheel_base" value="0.3440"/>
 	<xacro:property name="track_length" value="0.5366"/>
-	<xacro:property name="wheel_vertical_offset" value="0.07"/>
+	<xacro:property name="wheel_vertical_offset" value="0.12"/>
 	
 	<xacro:property name="wheel_width" value="0.08"/>
 	<xacro:property name="wheel_radius" value="0.130"/>
 	
 	<link name="base_link">
 		<visual>
-						<origin rpy="0 0 ${PI}" xyz="0 0 0"/>
+			<origin rpy="0 0 ${PI}" xyz="0 0 0.05"/>
 			<geometry>
 				<mesh filename="package://seven_robot_description/meshes/robot_base.dae"/>
 			</geometry>
@@ -109,13 +109,13 @@
 		<child link="imu_link"/>
 	</joint>
 	
-	<link name="camera">
+	<link name="camera_link">
 	</link>
 
 	<joint name="base_camera_joint" type="fixed">
-		<origin xyz="0 0 0" rpy="0 0 0"/>
+		<origin xyz="0.4335 0 0.272" rpy="0 0 0"/>
 		<parent link="base_link"/>
-		<child link="camera"/>
+		<child link="camera_link"/>
 	</joint>
 		
 	
