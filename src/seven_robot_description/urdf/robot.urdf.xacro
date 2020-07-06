@@ -35,7 +35,7 @@
 -->
 <robot name="seven" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-	<xacro:arg name="laser_enabled" default="FALSE"/>
+	<!--xacro:arg name="laser_enabled" default="false"/-->
 	<xacro:arg name="laser_xyz" default="$(optenv SEVEN_LMS2XX_XYZ 0.2750 0.0 0.1267)"/>
 	<xacro:arg name="laser_rpy" default="$(optenv SEVEN_LMS2XX_RPY 0.0 0.0 0.0)"/>
 	

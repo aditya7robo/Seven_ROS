@@ -5,8 +5,7 @@
 	<arg name="laser_enabled"/>
 	<param name="robot_description" command="$(find xacro)/xacro '$(find seven_robot_description)/urdf/robot.urdf.xacro'
 	 --inorder
-	 robot_namespace:=$(arg robot_namespace)
-	 laser_enabled:=$(arg laser_enabled)"/>
+	 robot_namespace:=$(arg robot_namespace)"/>
     
 	<node name="robot_state_publisher" type="robot_state_publisher" pkg="robot_state_publisher"/>
 </launch>
