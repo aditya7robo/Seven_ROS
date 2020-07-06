@@ -15,7 +15,6 @@
 	<node pkg="teleop_twist_joy" type="teleop_node" name="teleop_twist_joy"/>
 	
 	<include file="$(find seven_robot_description)/launch/description.launch">
-	  <arg name="laser_enabled" value="$(arg enable_Laser)"/>
 	</include>
 	
 	<group>
