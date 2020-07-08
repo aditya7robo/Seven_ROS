@@ -4,8 +4,8 @@
 	<arg name="realsense_enabled" value="$(env SEVEN_REALSENSE_ENABLED)"/>
 	<arg name="kinect_enabled" value="$(env SEVEN_KINECT_ENABLED)"/>
 	<arg name="uavcanNs" value="/uavcanRosBridge"/>
-	<arg name="publishcanTf" value="true"/>
-	<arg name="enableMotors" value="true"/>
+	<arg name="publishcanTf" value="false"/>
+	<arg name="enableMotors" value="false"/>
 
 	<include file="$(find seven_robot_localization)/launch/seven_robot_localization.launch">
 	 <arg name="realsense_enabled" default="$(arg realsense_enabled)"/>
@@ -27,9 +27,9 @@
 	  <rosparam file="$(find seven_robot_base)/params/robotParams.yaml" command="load" ns="$(arg uavcanNs)/uavcan_ros_bridge"/>
           <include file="$(find uavcan_ros_bridge)/launch/uavcan_ros_bridge.launch">
 	    <arg name="uavcanNs" value="$(arg uavcanNs)"/>
-	    <arg name="laser_enabled" value="$(arg enable_Laser)"/>
-	    <arg name="publishuavcanTf" value="$(arg publishcanTf)"/>
-	    <arg name="enableMotors" value="$(arg enableMotors)"/>
+	    <arg name="laser_enabled" default="$(arg enable_Laser)"/>
+	    <arg name="publishuavcanTf" default="$(arg publishcanTf)"/>
+	    <arg name="enableMotors" default="$(arg enableMotors)"/>
 	  </include>
 	</group>
 	
