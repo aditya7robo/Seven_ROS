@@ -5,7 +5,7 @@
 	<arg name="kinect_enabled" value="$(env SEVEN_KINECT_ENABLED)"/>
 	<arg name="uavcanNs" value="/uavcanRosBridge"/>
 	<arg name="publishcanTf" value="false"/>
-	<arg name="enableMotors" value="false"/>
+	<arg name="motors_enabled" value="true"/>
 
 	<include file="$(find seven_robot_localization)/launch/seven_robot_localization.launch">
 	 <arg name="realsense_enabled" default="$(arg realsense_enabled)"/>
@@ -23,13 +23,13 @@
 	</group>
 
 	<group>
-          <machine name="udooqdl" address="udooqdl" user="root" env-loader="/home/root/Seven_ROS/env_loader_udooqdl.sh" default="true"/>
+    <machine name="udooqdl" address="udooqdl" user="root" env-loader="/home/root/Seven_ROS/env_loader_udooqdl.sh" default="true"/>
 	  <rosparam file="$(find seven_robot_base)/params/robotParams.yaml" command="load" ns="$(arg uavcanNs)/uavcan_ros_bridge"/>
-          <include file="$(find uavcan_ros_bridge)/launch/uavcan_ros_bridge.launch">
+    <include file="$(find uavcan_ros_bridge)/launch/uavcan_ros_bridge.launch">
 	    <arg name="uavcanNs" value="$(arg uavcanNs)"/>
 	    <arg name="laser_enabled" default="$(arg enable_Laser)"/>
 	    <arg name="publishuavcanTf" default="$(arg publishcanTf)"/>
-	    <arg name="enableMotors" default="$(arg enableMotors)"/>
+	    <arg name="enableMotors" default="$(arg motors_enabled)"/>
 	  </include>
 	</group>
 	
