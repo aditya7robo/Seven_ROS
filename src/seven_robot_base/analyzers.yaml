@@ -1,0 +1,23 @@
+pub_rate: 1.0
+base_path: ''
+sensors:
+ type: AnalyzerGroup
+ path: Sensors
+ analyzers:
+  imu:
+   type: GenericAnalyzer
+   path: IMU
+   timeout: 5.0
+   find_and_remove_prefix: imu
+   num_items: 3
+
+odom:
+ type: AnalyzerGroup
+ path: Odom
+ analyzers:
+ odom:
+  type: GenericAnalyzer
+  path: Odom
+  timeout: 5.0
+  find_and_remove_prefix: odom
+  num_items: 3
