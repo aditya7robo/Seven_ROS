@@ -6,7 +6,7 @@
 	url = https://github.com/Tal-seven/seven_robotics_msgs.git
 [submodule "src/uavcan_ros_bridge"]
 	path = src/uavcan_ros_bridge
-	url = https://github.com/Tal-seven/uavcanRosBridge
+	url = https://github.com/Tal-seven/uavcanRosBridge.git
 	master = master
 [submodule "src/sicktoolbox_wrapper"]
 	path = src/sicktoolbox_wrapper
