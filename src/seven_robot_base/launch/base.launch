@@ -17,6 +17,10 @@
 	<include file="$(find seven_robot_description)/launch/description.launch">
 	</include>
 	
+  <node pkg="diagnostic_aggregator" type="aggregator_node" name="diag_agg">
+		<rosparam command="load" file="$(find seven_robot_base)/analyzers.yaml"/>
+	</node>	
+
 	<group>
 	 <machine name="sevenPC1" address="sevenPC1" user="talha" env-loader="/home/talha/SevenRobotics/Seven_ROS/env_loader_sevenPC1.sh" default="true"/>
 	 <node name="rviz" pkg="rviz" type="rviz" args="-d $(find seven_robot_description)/rviz/description.rviz"/>
@@ -32,5 +36,5 @@
 	    <arg name="enableMotors" value="$(arg enableMotors)"/>
 	  </include>
 	</group>
-	
+
 </launch>

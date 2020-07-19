@@ -1,0 +1,39 @@
+pub_rate: 1.0
+base_path: ''
+
+#analyzers:
+# imu:
+#  type: diagnostic_aggregator/GenericAnalyzer
+#  path: IMU
+#  find_and_remove_prefix: 'uavcanRosBridge/uavcan_ros_bridge/imu'
+#  expected: ['uavcanRosBridge/uavcan_ros_brige/imu: Frequency Status']
+#  timeout: 5.0
+   
+# odom:
+#  type: diagnostic_aggregator/GenericAnalyzer
+#  path: Odom
+#  find_and_remove_prefix: 'uavcanRosBridge/uavcan_ros_bridge/odom'
+#  expected: ['uavcanRosBridge/uavcan_ros_bridge/odometry: Frequency Status']
+#  timeout: 5.0
+
+sensors:
+ type: AnalyzerGroup
+ path: Sensors
+ analyzers:
+  imu:
+   type: GenericAnalyzer
+   path: IMU
+   timeout: 5.0
+   find_and_remove_prefix: 'uavcanRosBridge/uavcan_ros_bridge/imu'
+   num_items: 3
+
+odom:
+ type: AnalyzerGroup
+ path: Odom
+ analyzers:
+  odom:
+   type: GenericAnalyzer
+   path: Odom
+   timeout: 5.0
+   find_and_remove_prefix: 'uavcanRosBridge/uavcan_ros_bridge/odometry'
+   num_items: 3
