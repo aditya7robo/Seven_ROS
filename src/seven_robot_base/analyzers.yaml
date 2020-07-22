@@ -3,7 +3,7 @@ base_path: ''
 
 analyzers:
  sensors: 
-  type: AnalyzerGroup
+  type: diagnostic_aggregator/AnalyzerGroup
   path: Sensors
   analyzers:
    imu:

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+  <arg name="host" default="169.254.32.31"/>
+  <arg name="frame_id" default="laser_head"/>
+  <arg name="name" default="sick_lms111_driver" />
+  <arg name="topic" default="scan" />
+	<arg name="delay" value="30"/>
+
+  <node name="$(arg name)" pkg="sick_scan" type="sick_generic_caller" launch-prefix="bash -c 'sleep $(arg delay); $0 $@' ">
+    <param name="frame_id" type="str" value="$(arg frame_id)" />
+    <param name="use_binary_protocol" type="bool" value="True" />
+    <param name="scanner_type" type="string" value="sick_lms_1xx"/>
+    <param name="hostname" type="string" value="$(arg host)" />
+    <param name="port" type="string" value="2112" />
+    <param name="timelimit" type="int" value="5" />
+		<param name="min_ang" type="double" value="-1.658" />
+		<param name="max_ang" type="double" value="1.658" />
+  </node>
+</launch>
