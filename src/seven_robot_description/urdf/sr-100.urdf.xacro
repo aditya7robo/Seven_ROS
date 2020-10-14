@@ -1,0 +1,175 @@
+<?xml version="1.0"?>
+<!--
+/****************************************************************************
+*	Copyright (C) 2016-2019 Seven Robotics. All rights reserved.
+*	Author: Mohammed Talha Arif  <mtalha@sevenrobotics.in>
+*   
+*  Redistribution and use in source and binary forms, with or without
+*  modification, are permitted provided that the following conditions
+*  are met:
+*     
+*  1. Redistributions of source code must retain the above copyright
+*     notice, this list of conditions and the following disclaimer.
+*  2. Redistributions in binary form must reproduce the above copyright
+*     notice, this list of conditions and the following disclaimer in
+*     the documentation and/or other materials provided with the
+*     distribution.
+* 	3. Neither the name Seven Robotics nor the names of its contributors 
+* 		 may be used to endorse or promote products derived from this 
+* 		 software without specific prior written permission.
+*                
+*  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+*  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+*  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+*  FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+*  COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+*  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+*  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+*  OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+*  AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+*  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+*  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+*  POSSIBILITY OF SUCH DAMAGE.
+*                                
+****************************************************************************/
+-->
+<robot name="sr-100" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+	<xacro:property name="PI" value="3.14159"/>		
+  <xacro:arg name="use_nominal_extrinsics" default="false"/>	
+
+	<xacro:include filename="$(find seven_robot_description)/urdf/pu_wheel.urdf.xacro"/>
+	<xacro:include filename="$(find seven_robot_description)/urdf/_d415.urdf.xacro"/>
+	<xacro:include filename="$(find seven_robot_description)/urdf/sick_lms1xx.urdf.xacro"/>
+	<xacro:include filename="$(find seven_robot_description)/urdf/caster_wheel.urdf.xacro"/>
+	<xacro:include filename="$(find seven_robot_description)/urdf/sonarMount.urdf.xacro"/>
+	<xacro:include filename="$(find seven_robot_description)/urdf/sonar.urdf.xacro"/>
+	
+	<xacro:arg name="robot_namespace" default="/" />
+
+	<xacro:property name="base_size_x" value="0.97923"/>
+	<xacro:property name="base_size_y" value="0.77916"/>
+	<xacro:property name="base_size_z" value="0.3305"/>
+	<xacro:property name="base_clearance" value="0.03368"/>
+
+	<xacro:property name="wheel_base" value="0.3440"/>
+	<xacro:property name="wheel_vertical_offset" value="0.10687"/>
+	
+	<xacro:property name="wheel_width" value="0.04"/>
+	<xacro:property name="wheel_radius" value="0.075"/>
+	
+	<link name="base_link">
+    <visual>
+			<origin rpy="0 0 0" xyz="0 0 ${base_clearance}"/>
+			<geometry>
+				<mesh filename="package://seven_robot_description/meshes/mvpBASE1.dae"/>
+			</geometry>
+		</visual>
+
+		<collision>
+		<origin xyz="0 0 0" rpy="0 0 0"/>
+		<geometry>
+			<box size="${base_size_x} ${base_size_y} ${base_size_z}"/>
+		</geometry>
+		</collision>
+	</link>
+
+	<link name="base_footprint"/>
+
+	<joint name="base_footprint_joint" type="fixed">
+		<origin xyz="0 0 0" rpy="0 0 0"/>
+		<parent link="base_link"/>
+		<child link="base_footprint"/>
+	</joint>
+	
+
+	<link name="inertial_link">
+		<inertial>
+			<mass value="47.4"/>
+			<origin xyz="-0.001443 -0.000133 0.1181" rpy="0 0 0"/>
+			<inertia ixx="1.9397" ixy="-0.0051" ixz="0.0803" iyx="-0.0051" iyy="2.3585" iyz="0.0107" izx="0.0803" izy="0.0107" izz="2.2906"/>
+		</inertial>
+	</link>
+	
+	<joint name="inertial_joint" type="fixed">
+		<origin xyz="0 0 0" rpy="0 0 0"/>
+		<parent link="base_link"/>
+		<child link="inertial_link"/>
+	</joint>
+	
+	<link name="imu_link">
+	</link>
+	
+	<joint name="base_imu_joint" type="fixed">
+		<origin xyz="0 0 0.23680" rpy="0 0 0"/>
+		<parent link="base_link"/>
+		<child link="imu_link"/>
+	</joint>
+	
+	<link name="camera_link">
+	</link>
+
+	<joint name="base_camera_joint" type="fixed">
+		<origin xyz="0.44215 0.005 0.38036" rpy="0 0 0"/>
+		<parent link="base_link"/>
+		<child link="camera_link"/>
+	</joint>
+
+	<link name="sick_mount_link"/>
+	
+	<joint name="sick_base_joint" type="fixed">
+	 <origin xyz="0.41121 -0.31152 0.38036" rpy="${PI} 0.0 ${PI/4}"/>
+   <parent link="base_link"/>
+	 <child link="sick_mount_link"/>
+	</joint>
+	
+	<xacro:caster_wheel prefix="frontRight">
+		<origin xyz="0.35015 -0.24985 0.10687" rpy="0 0 0"/>	
+	</xacro:caster_wheel>
+	
+	<xacro:caster_wheel prefix="rearRight">
+		<origin xyz="-0.34985 -0.24985 0.10687" rpy="0 0 0"/>	
+	</xacro:caster_wheel>
+	
+	<xacro:caster_wheel prefix="frontLeft">
+		<origin xyz="0.35015 0.25015 0.10687" rpy="0 0 0"/>	
+	</xacro:caster_wheel>
+	
+	<xacro:caster_wheel prefix="rearLeft">
+		<origin xyz="-0.34985 0.25015 0.10687" rpy="0 0 0"/>	
+	</xacro:caster_wheel>
+	
+	<xacro:pu_wheel prefix="Right">
+		<origin xyz="-0.00013 -0.32986 0.04280" rpy="${PI}/2 0 0"/>
+	</xacro:pu_wheel>	
+	
+	<xacro:pu_wheel prefix="Left">
+		<origin xyz="-0.0013 0.33014 0.04280" rpy="-${PI}/2 0 0"/>
+	</xacro:pu_wheel>
+
+	<xacro:sick_lms_1xx name="sick" ros_topic="scan"/>
+
+	<xacro:sensor_d415 parent="base_link" use_nominal_extrinsics="$(arg use_nominal_extrinsics)">
+		<origin xyz="0.44215 0.005 0.38036" rpy="0 0 0"/>
+	</xacro:sensor_d415>
+
+	<xacro:sonarMount parent="base_link">
+    <origin xyz="0.42915 -0.00015 0.06192" rpy="0 0 0"/>
+	</xacro:sonarMount>
+
+	<xacro:sonar prefix="1" parent="base_link">
+	  <origin xyz="0.45103 -0.03362 0.08181" rpy="0 0 -${PI}/6"/>
+	</xacro:sonar>
+
+  <xacro:sonar prefix="2" parent="base_link">
+	  <origin xyz="0.46134 -0.01474 0.08207" rpy="0 0 -${PI}/12"/>
+	</xacro:sonar>
+ 
+ 	<xacro:sonar prefix="3" parent="base_link">
+	  <origin xyz="0.46134 0.01506 0.08185" rpy="0 0 ${PI}/12"/>
+	</xacro:sonar>
+
+ 	<xacro:sonar prefix="4" parent="base_link">
+	  <origin xyz="0.45103 -0.03417 0.08152" rpy="0 0 ${PI}/6"/>
+	</xacro:sonar>
+</robot>
