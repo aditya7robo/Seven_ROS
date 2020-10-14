@@ -60,7 +60,7 @@
 	
 	<link name="base_link">
     <visual>
-			<origin rpy="0 0 0" xyz="0 0 ${base_clearance}"/>
+			<origin rpy="0 0 0" xyz="0 0 0"/>
 			<geometry>
 				<mesh filename="package://seven_robot_description/meshes/mvpBASE1.dae"/>
 			</geometry>
@@ -106,16 +106,6 @@
 		<child link="imu_link"/>
 	</joint>
 	
-	<link name="camera_link">
-	</link>
-
-	<joint name="base_camera_joint" type="fixed">
-		<origin xyz="0.44215 0.005 0.38036" rpy="0 0 0"/>
-		<parent link="base_link"/>
-		<child link="camera_link"/>
-	</joint>
-
-	<link name="sick_mount_link"/>
 	
 	<joint name="sick_base_joint" type="fixed">
 	 <origin xyz="0.41121 -0.31152 0.38036" rpy="${PI} 0.0 ${PI/4}"/>
@@ -140,11 +130,11 @@
 	</xacro:caster_wheel>
 	
 	<xacro:pu_wheel prefix="Right">
-		<origin xyz="-0.00013 -0.32986 0.04280" rpy="${PI}/2 0 0"/>
+		<origin xyz="-0.00013 -0.32986 0.04280" rpy="${PI/2} 0 0"/>
 	</xacro:pu_wheel>	
 	
 	<xacro:pu_wheel prefix="Left">
-		<origin xyz="-0.0013 0.33014 0.04280" rpy="-${PI}/2 0 0"/>
+		<origin xyz="-0.0013 0.33014 0.04280" rpy="-${PI/2} 0 0"/>
 	</xacro:pu_wheel>
 
 	<xacro:sick_lms_1xx name="sick" ros_topic="scan"/>
@@ -153,23 +143,23 @@
 		<origin xyz="0.44215 0.005 0.38036" rpy="0 0 0"/>
 	</xacro:sensor_d415>
 
-	<xacro:sonarMount parent="base_link">
+	<xacro:sonarMount parent="base_link" name="sonarArrayMount">
     <origin xyz="0.42915 -0.00015 0.06192" rpy="0 0 0"/>
 	</xacro:sonarMount>
 
 	<xacro:sonar prefix="1" parent="base_link">
-	  <origin xyz="0.45103 -0.03362 0.08181" rpy="0 0 -${PI}/6"/>
+	  <origin xyz="0.45103 -0.03362 0.08181" rpy="0 0 -${PI/6}"/>
 	</xacro:sonar>
 
   <xacro:sonar prefix="2" parent="base_link">
-	  <origin xyz="0.46134 -0.01474 0.08207" rpy="0 0 -${PI}/12"/>
+	  <origin xyz="0.46134 -0.01474 0.08207" rpy="0 0 -${PI/12}"/>
 	</xacro:sonar>
  
  	<xacro:sonar prefix="3" parent="base_link">
-	  <origin xyz="0.46134 0.01506 0.08185" rpy="0 0 ${PI}/12"/>
+	  <origin xyz="0.46134 0.01506 0.08185" rpy="0 0 ${PI/12}"/>
 	</xacro:sonar>
 
  	<xacro:sonar prefix="4" parent="base_link">
-	  <origin xyz="0.45103 -0.03417 0.08152" rpy="0 0 ${PI}/6"/>
+	  <origin xyz="0.45103 -0.03417 0.08152" rpy="0 0 ${PI/6}"/>
 	</xacro:sonar>
 </robot>
