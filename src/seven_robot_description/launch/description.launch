@@ -7,6 +7,7 @@
 	 --inorder
 	 robot_namespace:=$(arg robot_namespace)"/>
 	
+	<node name="robotParser" type="robotParser" pkg="seven_robot_description"/> 
 	<node name="robot_state_publisher" type="robot_state_publisher" pkg="robot_state_publisher"/>
 
 </launch>

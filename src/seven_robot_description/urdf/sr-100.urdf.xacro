@@ -1,5 +1,4 @@
 <?xml version="1.0"?>
-
 <!--
 /****************************************************************************
 *	Copyright (C) 2016-2019 Seven Robotics. All rights reserved.
@@ -109,7 +108,7 @@
 	
 	
 	<joint name="sick_base_joint" type="fixed">
-	 <origin xyz="0.41121 -0.31152 0.18972" rpy="${PI} 0.0 ${-PI/4}"/>
+	 <origin xyz="0.41121 -0.31152 0.38036" rpy="${PI} 0.0 ${-PI/4}"/>
    <parent link="base_link"/>
 	 <child link="sick_mount_link"/>
 	</joint>
@@ -141,7 +140,7 @@
 	<xacro:sick_lms_1xx name="sick" ros_topic="scan"/>
 
 	<xacro:sensor_d415 parent="base_link" use_nominal_extrinsics="$(arg use_nominal_extrinsics)">
-		<origin xyz="0.42720 0.005 0.36786" rpy="0 0 0"/>
+		<origin xyz="0.44215 0.005 0.38036" rpy="0 0 0"/>
 	</xacro:sensor_d415>
 
 	<xacro:sonarMount parent="base_link" name="sonarArrayMount">

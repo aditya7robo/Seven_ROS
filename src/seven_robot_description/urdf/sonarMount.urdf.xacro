@@ -53,16 +53,16 @@
       
 			<collision>
 			 <origin xyz="0 0 0" rpy="0 0 0"/>
-       <geometry>
-        <box size="0.036 0.120 0.040"/>
-       </geometry>
+      <geometry box="0.036 0.120 0.040"/>
 			</collision>
 		</link>
 
-		<joint name="${name}_joint" type="fixed">
+		<joint name="sonarMount_joint" type="fixed">
 			<parent link="${parent}"/>
-			<child link="${name}_link"/>
+			<child link=" sonarMount_link"/>
 			<xacro:insert_block name="joint_pose"/>
 		</joint>
- </xacro:macro>
+
+	
+	</xacro:macro>
 </robot>		
