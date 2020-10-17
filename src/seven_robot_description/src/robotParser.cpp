@@ -43,6 +43,38 @@ bool isOnRight(urdf::Pose& p)
  return false;
 }
 
+template<class Type,class Element>
+struct hasType
+{
+};
+
+template<class Type>
+struct hasType<Type,urdf::CollisionSharedPtr>
+{
+  hasType(Type t)
+  {
+   if(t->collision==nullptr)
+    value=false;
+   else
+    value=true;
+  }
+ 
+ bool value=false;
+};
+
+template<class Type>
+struct hasType<Type,urdf::VisualSharedPtr>
+{
+ hasType(Type t)
+ {
+   if(t->visual==nullptr)
+    value=false;
+   else
+    value=true;
+ }
+ bool value=false;
+};
+
 int main(int argc,char** argv) 
 {
  ros::init(argc,argv,"urdfParser");
@@ -52,36 +84,28 @@ int main(int argc,char** argv)
  std::string robot_name;
  std::vector<std::string> rightLinks,leftLinks;
  std::string rightLink,leftLink;
- std::vector<boost::shared_ptr<urdf::Link> > links;
+ std::vector<urdf::LinkSharedPtr> links;
  
  nh.getParam("robot_description",robot_name);
- robot_model.initParam(robot_name);
+ robot_model.initString(robot_name);
  
  robot_model.getLinks(links);
- for(std::vector<urdf::LinkSharedPtr>::iterator link=links.begin();link != links.end();link++)
- {
-	 
-   if((*link)->parent_joint->type == urdf::Joint::CONTINUOUS)
-	 {
-	  if(isOnRight((*link)->collision->origin))
-		 rightLinks.push_back((*link)->name);
-		else
-		 leftLinks.push_back((*link)->name);
-	 }
- }
+ std::cout << "read urdf. Found "<<links.size()<<" links\n";
+ 
 
- if(rightLinks.size()>1)
+/* if(rightLinks.size()>1)
  {
-  ROS_DEBUG("More than one right drive links found, %ld. Using the first for joint state publishing",
+  ROS_DEBUG_NAMED("robotParser","More than one right drive links found, %ld. Using the first for joint state publishing",
 						rightLinks.size());
  }
 
  if(leftLinks.size()>1)
  {
-  ROS_DEBUG("More than one left drive links found, %ld. Using the first for joint state publishing",
+  ROS_DEBUG_NAMED("robotParser","More than one left drive links found, %ld. Using the first for joint state publishing",
 						leftLinks.size());
  }
 
  nh.param<std::string>("/rightLink",rightLinks.front(),"Right");
  nh.param<std::string>("/leftLink",leftLinks.front(),"Left");
+ ros::spin();*/
 }
