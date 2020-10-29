@@ -17,6 +17,6 @@ accelXOffset: 0.6617
 accelYOffset: 0.0708
 accelZOffset: 1.2691
 closeLoopControl: true
-imuXInverted: true
-imuYInverted: true
-imuZInverted: true 
+imuXInverted: false
+imuYInverted: false
+imuZInverted: false 
