@@ -36,8 +36,8 @@
 
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="sonarMount">
 
-	<xacro:macro name="sonarMount" params="*joint_pose parent name">
-		<link name="${name}_link">
+	<xacro:macro name="sonarMount" params="*joint_pose parent">
+		<link name="sonarMount_link">
 			<inertial>
 				<mass value=".0900"/>
 				<origin xyz="0 0 0"/>
@@ -53,13 +53,16 @@
       
 			<collision>
 			 <origin xyz="0 0 0" rpy="0 0 0"/>
-      <geometry box="0.036 0.120 0.040"/>
+			 <geometry>
+				 <box size="0.036 0.120 0.040"/>
+			 </geometry>
 			</collision>
-		</link>
+		
+    </link>
 
 		<joint name="sonarMount_joint" type="fixed">
 			<parent link="${parent}"/>
-			<child link=" sonarMount_link"/>
+			<child link="sonarMount_link"/>
 			<xacro:insert_block name="joint_pose"/>
 		</joint>
 
