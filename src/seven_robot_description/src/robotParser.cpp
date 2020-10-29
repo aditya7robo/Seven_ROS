@@ -55,7 +55,7 @@ int main(int argc,char** argv)
  std::vector<boost::shared_ptr<urdf::Link> > links;
  
  nh.getParam("robot_description",robot_name);
- robot_model.initParam(robot_name);
+ robot_model.initString(robot_name);
  
  robot_model.getLinks(links);
  for(std::vector<urdf::LinkSharedPtr>::iterator link=links.begin();link != links.end();link++)
