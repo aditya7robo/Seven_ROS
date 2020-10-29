@@ -134,7 +134,7 @@
 	</xacro:pu_wheel>	
 	
 	<xacro:pu_wheel prefix="Left">
-		<origin xyz="-0.0013 0.33014 0.04280" rpy="${-PI/2} 0 0"/>
+		<origin xyz="-0.0013 0.33014 0.04280" rpy="-${PI/2} 0 0"/>
 	</xacro:pu_wheel>
 
 	<xacro:sick_lms_1xx name="sick" ros_topic="scan"/>
