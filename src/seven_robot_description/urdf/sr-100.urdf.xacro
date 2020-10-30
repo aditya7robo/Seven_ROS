@@ -38,6 +38,7 @@
 	<xacro:property name="PI" value="3.14159"/>		
   <xacro:arg name="use_nominal_extrinsics" default="false"/>	
 
+	<xacro:include filename="$(find seven_robot_description)/urdf/sr-100.gazebo"/>
 	<xacro:include filename="$(find seven_robot_description)/urdf/pu_wheel.urdf.xacro"/>
 	<xacro:include filename="$(find seven_robot_description)/urdf/_d415.urdf.xacro"/>
 	<xacro:include filename="$(find seven_robot_description)/urdf/sick_lms1xx.urdf.xacro"/>
@@ -67,10 +68,10 @@
 		</visual>
 
 		<collision>
-		<origin xyz="0 0 0" rpy="0 0 0"/>
-		<geometry>
-			<box size="${base_size_x} ${base_size_y} ${base_size_z}"/>
-		</geometry>
+		 <origin xyz="0 0 0.204528" rpy="0 0 0"/>
+		 <geometry>
+			<box size="${base_size_x} ${base_size_y} 0.47057"/>
+		 </geometry>
 		</collision>
 	</link>
 
@@ -86,8 +87,8 @@
 	<link name="inertial_link">
 		<inertial>
 			<mass value="47.4"/>
-			<origin xyz="-0.001443 -0.000133 0.1181" rpy="0 0 0"/>
-			<inertia ixx="1.9397" ixy="-0.0051" ixz="0.0803" iyx="-0.0051" iyy="2.3585" iyz="0.0107" izx="0.0803" izy="0.0107" izz="2.2906"/>
+			<origin xyz="-0.01687 -0.00816 0.37647" rpy="0 0 0"/>
+			<inertia ixx="12585" ixy="-15.56" ixz="536.42" iyx="-15.56" iyy="806.894" iyz="-130.895" izx="-536.424" izy="-130.895" izz="5242.6"/>
 		</inertial>
 	</link>
 	

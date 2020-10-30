@@ -3,11 +3,16 @@
 <launch>
 	<arg name="robot_namespace" default="/"/>
 	<arg name="laser_enabled"/>
+	<arg name="simulation"/>
 	<param name="robot_description" command="$(find xacro)/xacro '$(find seven_robot_description)/urdf/sr-100.urdf.xacro'
 	 --inorder
 	 robot_namespace:=$(arg robot_namespace)"/>
-	
+  
+  <group if="$(arg simulation)">
+		<node name="joint_state_publisher" type="joint_state_publisher" pkg="joint_state_publisher"/>
+	  <param name="use_gui" value="false"/>
+  </group>
+
 	<!--node name="robotParser" type="robotParser" pkg="seven_robot_description"/--> 
 	<node name="robot_state_publisher" type="robot_state_publisher" pkg="robot_state_publisher"/>
-
 </launch>

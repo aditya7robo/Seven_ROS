@@ -63,7 +63,12 @@
 			<parent link="base_link"/>
 			<child link=" ${prefix}_link"/>
 			<xacro:insert_block name="joint_pose"/>
-			<axis xyz="0 0 1" rpy="0 0 0"/>
+			<xacro:if value="${prefix == 'Right'}">
+				<axis xyz="0 0 -1" rpy="0 0 0"/>
+			</xacro:if>
+			<xacro:if value="${prefix == 'Left'}">
+			 <axis xyz="0 0 1" rpy="0 0 0"/>
+			</xacro:if>
 		</joint>
 
 		<transmission name=" ${prefix}_wheeltrans" type="SimpleTransmission">
