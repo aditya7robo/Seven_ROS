@@ -9,7 +9,7 @@
   <arg name="debug" default="false"/>
   
  <include file="$(find gazebo_ros)/launch/empty_world.launch">
-  <arg name="world_name" value="$(find seven_robot_gazebo)/worlds/seven.world"/>
+	<arg name="world_name" value="$(find aws_robomaker_small_warehouse_world)/worlds/small_warehouse.world "/>
   <arg name="paused" value="$(arg paused)"/>
   <arg name="use_sim_time" value="$(arg use_sim_time)"/>
   <arg name="gui" value="$(arg gui)"/>
@@ -20,7 +20,11 @@
 	<include file="$(find seven_robot_description)/launch/description.launch">
 	 <arg name="simulation" value="true"/>
 	</include>
-
- <node name="robot_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
+ 
+	<node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" clear_params="true">
+	 <rosparam command="load" file="$(find seven_robot_localization)/params/ekf.yaml"/>
+  </node>
+	
+	<node name="robot_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
 	 args="-urdf -param robot_description -z 1 -model sr-100" />
 </launch>
