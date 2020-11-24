@@ -14,3 +14,9 @@
 [submodule "src/sicktoolbox"]
 	path = src/sicktoolbox
 	url = https://github.com/Tal-seven/lms_toolbox
+[submodule "src/seven_robot_perception"]
+	path = src/seven_robot_perception
+	url = https://github.com/Tal-seven/seven_robot_perception.git
+[submodule "src/seven_robot_vision"]
+	path = src/seven_robot_vision
+	url = https://github.com/Tal-seven/seven_robot_vision.git
