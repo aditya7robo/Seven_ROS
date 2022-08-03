@@ -45,7 +45,7 @@ bool isOnRight(urdf::Pose& p)
 
 int main(int argc,char** argv) 
 {
- ros::init(argc,argv,"urdfParser");
+/* ros::init(argc,argv,"urdfParser");
  ros::NodeHandle nh;
 
  urdf::Model robot_model;
@@ -84,4 +84,5 @@ int main(int argc,char** argv)
 
  nh.param<std::string>("/rightLink",rightLinks.front(),"Right");
  nh.param<std::string>("/leftLink",leftLinks.front(),"Left");
-}
+*/
+ }

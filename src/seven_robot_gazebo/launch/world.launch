@@ -26,10 +26,10 @@
   </node>
 	
 	<node name="robot_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
-		args="-urdf -param robot_description -z 1 -model sr-100" />
+		args="-urdf -param robot_description -z 1 -model sr-300" />
  
 	<node pkg="joy" type="joy_node" name="joy_node"/>
 	<node pkg="teleop_twist_joy" type="teleop_node" name="teleop_twist_joy"/>
 	
-  <include file="$(find slam_toolbox)/launch/online_sync.launch"/>
+  <include file="$(find slam_toolbox)/online_sync.launch"/>
 </launch>

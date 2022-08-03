@@ -4,7 +4,7 @@
 	<arg name="robot_namespace" default="/"/>
 	<arg name="laser_enabled"/>
 	<arg name="simulation"/>
-	<param name="robot_description" command="$(find xacro)/xacro '$(find seven_robot_description)/urdf/sr-100.urdf.xacro'
+	<param name="robot_description" command="$(find xacro)/xacro '$(find seven_robot_description)/urdf/sr-300.urdf.xacro'
 	 --inorder
 	 robot_namespace:=$(arg robot_namespace)"/>
   
