@@ -64,7 +64,7 @@
 	
 	<link name="base_link">
     <visual>
-			<origin rpy="0 0 0" xyz="0 0 0"/>
+			<origin rpy="${PI} 0 0" xyz="0 0 0"/>
 			<geometry>
 				<mesh filename="package://seven_robot_description/meshes/sr300_chasis.dae"/>
 			</geometry>
@@ -126,7 +126,7 @@
   </gazebo>					
 	
 	<joint name="sick_base_joint" type="fixed">
-	 <origin xyz="0.3661 0.2171 -0.13329" rpy="0 0 ${PI/4}"/>
+		<origin xyz="0.375 -0.219 0.13329" rpy="${PI} 0 -${PI/4}"/>
    <parent link="base_link"/>
 	 <child link="sick_mount_link"/>
 	</joint>
@@ -142,11 +142,11 @@
 	<xacro:sick_lms_1xx name="sick" ros_topic="scan"/>
 
 	<xacro:sensor_d415_left parent="base_link" name="$(arg camera_name_left)" use_nominal_extrinsics="$(arg use_nominal_extrinsics)">
-		<origin xyz="0.42 0.09026 -0.03433" rpy="-1.5140654 0.2588659 -0.032099"/>
+		<origin xyz="0.415 0.1178 0.022233" rpy="1.6002679 -0.2219 -0.439"/>
 	</xacro:sensor_d415_left>
 
 	<xacro:sensor_d415_right parent="base_link" name="$(arg camera_name_right)" use_nominal_extrinsics="$(arg use_nominal_extrinsics)">
-		<origin xyz="0.42 -0.11026 -0.03433" rpy="-1.6002679 0.2855055 -6.177199343"/>
+		<origin xyz="0.415 -0.0928 0.025233" rpy="1.5413221 -0.3219 0.439"/>
 	</xacro:sensor_d415_right>
   
 	

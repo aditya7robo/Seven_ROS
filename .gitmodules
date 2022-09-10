@@ -23,3 +23,6 @@
 [submodule "src/seven_robot_visualization"]
 	path = src/seven_robot_visualization
 	url = https://github.com/Tal-seven/seven_robot_visualization.git
+[submodule "src/seven_robot_utils"]
+	path = src/seven_robot_utils
+	url = https://github.com/Tal-seven/seven_robot_utils.git

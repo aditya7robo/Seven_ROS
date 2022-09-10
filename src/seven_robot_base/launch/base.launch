@@ -2,7 +2,6 @@
 <launch>
 	<arg name="enable_Laser" value="$(env SEVEN_LMS_ENABLED)"/>	
 	<arg name="realsense_enabled" value="$(env SEVEN_REALSENSE_ENABLED)"/>
-	<arg name="kinect_enabled" value="$(env SEVEN_KINECT_ENABLED)"/>
 	<arg name="uavcanNs" value="/uavcanRosBridge"/>
 	<arg name="publishcanTf" value="false"/>
 	<arg name="motors_enabled" value="true"/>
@@ -20,6 +19,7 @@
 	<node pkg="teleop_twist_joy" type="teleop_node" name="teleop_twist_joy"/>
 	
 	<include file="$(find seven_robot_description)/launch/description.launch">
+	<arg name="simulation" default="false"/>
 	</include>
 	
   <node pkg="diagnostic_aggregator" type="aggregator_node" name="diag_agg">
@@ -28,15 +28,15 @@
 	
 	<node name="robotParser" type="robotParser" pkg="seven_robot_description"/> 
 	
-	<group>
+	<!--group>
 	 <machine name="sevenPC1" address="sevenPC1" user="talha" env-loader="/home/talha/SevenRobotics/Seven_ROS/env_loader_sevenPC1.sh" default="true"/>
 	 <node name="rviz" pkg="rviz" type="rviz" args="-d `rospack find seven_robot_description`/rviz/description.rviz"/>
-	</group>
+	</group-->
 
 	<group>
-    <machine name="udooqdl" address="udooqdl" user="root" env-loader="/home/root/Seven_ROS/env_loader_udooqdl.sh" default="true"/>
+    <machine name="udooqdl" address="192.168.1.23" user="root" env-loader="/home/root/Seven_ROS/env_loader_udooqdl.sh" default="never" timeout="10.0"/>
 	  <rosparam file="$(find seven_robot_base)/params/robotParams.yaml" command="load" ns="$(arg uavcanNs)/uavcan_ros_bridge"/>
-		<rosparam file="$(find seven_robot_localization)/params/diff_drive.yaml" command="load" ns="$(arg uavcanNs/uavcan_ros_bridge)"/>
+		<rosparam file="$(find seven_robot_localization)/params/diff_drive.yaml" command="load" ns="$(arg uavcanNs)/uavcan_ros_bridge"/>
 		<include file="$(find uavcan_ros_bridge)/launch/uavcan_ros_bridge.launch">
 	    <arg name="uavcanNs" value="$(arg uavcanNs)"/>
 	    <arg name="laser_enabled" default="$(arg enable_Laser)"/>
