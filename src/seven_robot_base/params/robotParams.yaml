@@ -18,4 +18,4 @@ accelZOffset: 1.2691
 closeLoopControl: true
 imuXInverted: false
 imuYInverted: false
-imuZInverted: false 
+imuZInverted: false

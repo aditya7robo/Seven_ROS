@@ -15,7 +15,9 @@
 		<include file="$(find seven_robot_localization)/launch/sick_driver.launch"/>
   </group>
 	
-	<node pkg="joy" type="joy_node" name="joy_node"/>
+  	<node pkg="joy" type="joy_node" name="joy_node">
+	<rosparam file="$(find seven_robot_base)/params/system.yaml" command="load"/>
+	</node>
 	<node pkg="teleop_twist_joy" type="teleop_node" name="teleop_twist_joy"/>
 	
 	<include file="$(find seven_robot_description)/launch/description.launch">
@@ -34,10 +36,10 @@
 	</group-->
 
 	<group>
-    <machine name="udooqdl" address="192.168.1.23" user="root" env-loader="/home/root/Seven_ROS/env_loader_udooqdl.sh" default="never" timeout="10.0"/>
+    	<machine name="udooqdl" address="192.168.1.23" user="root" env-loader="/home/root/Seven_ROS/env_loader_udooqdl.sh" default="true"/>
 	  <rosparam file="$(find seven_robot_base)/params/robotParams.yaml" command="load" ns="$(arg uavcanNs)/uavcan_ros_bridge"/>
-		<rosparam file="$(find seven_robot_localization)/params/diff_drive.yaml" command="load" ns="$(arg uavcanNs)/uavcan_ros_bridge"/>
-		<include file="$(find uavcan_ros_bridge)/launch/uavcan_ros_bridge.launch">
+	  <rosparam file="$(find seven_robot_localization)/params/diff_drive.yaml" command="load" ns="$(arg uavcanNs)/uavcan_ros_bridge"/>
+	  <include file="$(find uavcan_ros_bridge)/launch/uavcan_ros_bridge.launch">
 	    <arg name="uavcanNs" value="$(arg uavcanNs)"/>
 	    <arg name="laser_enabled" default="$(arg enable_Laser)"/>
 	    <arg name="publishuavcanTf" default="$(arg publishcanTf)"/>
