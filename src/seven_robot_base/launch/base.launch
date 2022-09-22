@@ -30,6 +30,8 @@
 	
 	<node name="robotParser" type="robotParser" pkg="seven_robot_description"/> 
 	
+	<include file="$(find slam_toolbox)/launch/online_sync.launch"/>	
+	
 	<!--group>
 	 <machine name="sevenPC1" address="sevenPC1" user="talha" env-loader="/home/talha/SevenRobotics/Seven_ROS/env_loader_sevenPC1.sh" default="true"/>
 	 <node name="rviz" pkg="rviz" type="rviz" args="-d `rospack find seven_robot_description`/rviz/description.rviz"/>

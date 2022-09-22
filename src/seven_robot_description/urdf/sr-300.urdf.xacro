@@ -63,19 +63,19 @@
 	<xacro:property name="wheel_radius" value="0.08641"/>
 	
 	<link name="base_link">
-    <visual>
-			<origin rpy="${PI} 0 0" xyz="0 0 0"/>
-			<geometry>
-				<mesh filename="package://seven_robot_description/meshes/sr300_chasis.dae"/>
-			</geometry>
-		</visual>
+    	<visual>
+		<origin rpy="${PI} 0 0" xyz="0 0 0"/>
+		<geometry>
+			<mesh filename="package://seven_robot_description/meshes/sr300_chasis.dae"/>
+		</geometry>
+	</visual>
 
-		<collision>
-		 <origin xyz="0 0 0.204528" rpy="0 0 0"/>
-		 <geometry>
-			<box size="${base_size_x} ${base_size_y} 0.47057"/>
-		 </geometry>
-		</collision>
+	<collision>
+	 <origin xyz="0 0 0.204528" rpy="0 0 0"/>
+	 <geometry>
+	   <box size="${base_size_x} ${base_size_y} 0.47057"/>
+	 </geometry>
+	</collision>
 	</link>
 
 	<link name="base_footprint"/>
@@ -88,11 +88,11 @@
 	
 
 	<link name="inertial_link">
-		<inertial>
-			<mass value="47000.4"/>
-			<origin xyz="-0.01687 -0.00816 0.37647" rpy="0 0 0"/>
-			<inertia ixx="12585" ixy="-15.56" ixz="536.42" iyx="-15.56" iyy="806.894" iyz="-130.895" izx="-536.424" izy="-130.895" izz="5242.6"/>
-		</inertial>
+	 <inertial>
+	   <mass value="47000.4"/>
+	   <origin xyz="-0.01687 -0.00816 0.37647" rpy="0 0 0"/>
+	   <inertia ixx="12585" ixy="-15.56" ixz="536.42" iyx="-15.56" iyy="806.894" iyz="-130.895" izx="-536.424" izy="-130.895" izz="5242.6"/>
+	 </inertial>
 	</link>
 	
 	<joint name="inertial_joint" type="fixed">
@@ -114,7 +114,7 @@
 	 <plugin name="imu_controller" filename="libhector_gazebo_ros_imu.so">
 	  <robotNamespace>/</robotNamespace>
 	  <updateRate>50.0</updateRate>
-    <bodyName>imu_link</bodyName>
+    	  <bodyName>imu_link</bodyName>
 	  <topicName>imu</topicName>
 	  <accelDrift>0.005 0.005 0.005</accelDrift>
 	  <accelGaussianNoise>0.005 0.005 0.005</accelGaussianNoise>
@@ -126,27 +126,27 @@
   </gazebo>					
 	
 	<joint name="sick_base_joint" type="fixed">
-		<origin xyz="0.375 -0.219 0.13329" rpy="${PI} 0 -${PI/4}"/>
-   <parent link="base_link"/>
+	 <origin xyz="0.375 -0.219 0.13329" rpy="${PI} 0 -${PI/4}"/>
+   	 <parent link="base_link"/>
 	 <child link="sick_mount_link"/>
 	</joint>
 	
 	<xacro:pu_wheel_sr300 prefix="Right">
-		<origin xyz="0.025 0.1918 0.02342" rpy="-${PI/2} 0 0"/>
+	 <origin xyz="0.025 0.1918 0.02342" rpy="-${PI/2} 0 0"/>
 	</xacro:pu_wheel_sr300>	
 	
 	<xacro:pu_wheel_sr300 prefix="Left">
-		<origin xyz="0.025 -0.1958 0.02291" rpy="${PI/2} 0 0"/>
+	 <origin xyz="0.025 -0.1958 0.02291" rpy="${PI/2} 0 0"/>
 	</xacro:pu_wheel_sr300>
 
 	<xacro:sick_lms_1xx name="sick" ros_topic="scan"/>
 
 	<xacro:sensor_d415_left parent="base_link" name="$(arg camera_name_left)" use_nominal_extrinsics="$(arg use_nominal_extrinsics)">
-		<origin xyz="0.415 0.1178 0.022233" rpy="1.6002679 -0.2219 -0.439"/>
+	 <origin xyz="0.415 0.1178 0.022233" rpy="1.6002679 -0.2219 -0.439"/>
 	</xacro:sensor_d415_left>
 
 	<xacro:sensor_d415_right parent="base_link" name="$(arg camera_name_right)" use_nominal_extrinsics="$(arg use_nominal_extrinsics)">
-		<origin xyz="0.415 -0.0928 0.025233" rpy="1.5413221 -0.3219 0.439"/>
+	 <origin xyz="0.415 -0.0928 0.025233" rpy="1.5413221 -0.3219 0.439"/>
 	</xacro:sensor_d415_right>
   
 	

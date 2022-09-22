@@ -8,7 +8,7 @@ two_d_mode: true
 
 debug: true
 
-debug_out_file: /home/talha/rosDebug/ekf/ekf_debug.txt
+debug_out_file: /home/seven-robot-1/rosDebug/ekf/ekf_debug.txt
 
 publish_tf: true
 

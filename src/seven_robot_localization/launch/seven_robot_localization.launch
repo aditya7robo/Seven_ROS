@@ -7,21 +7,23 @@
     <arg name="serial_no" value="802212060737"/>
     <arg name="enable_pointcloud" value="true"/>
     <arg name="enable_depth" value="true"/>
-    <arg name="depth_height" value="720"/>
-    <arg name="depth_width" value="1280"/>
-    <arg name="color_width" value="1280"/>
-    <arg name="color_height" value="720"/>
+    <arg name="depth_height" value="480"/>
+    <arg name="depth_width" value="640"/>
+    <arg name="color_width" value="640"/>
+    <arg name="color_height" value="480"/>
+    <arg name="filters" value="decimation"/>
   </include>
   <include file="$(find realsense2_camera)/launch/rs_rgbd.launch">
     <arg name="camera" value="sensor_d415_right"/>
     <arg name="serial_no" value="746112061094"/>
     <arg name="enable_pointcloud" value="true"/>
     <arg name="enable_depth" value="true"/>
-    <arg name="depth_height" value="720"/>
-    <arg name="depth_width" value="1280"/>
-    <arg name="color_width" value="1280"/>
-    <arg name="color_height" value="720"/>
-  </include>
+    <arg name="depth_height" value="480"/>
+    <arg name="depth_width" value="640"/>
+    <arg name="color_width" value="640"/>
+    <arg name="color_height" value="480"/>
+   <arg name="filters" value="decimation"/>
+ </include>
  </group>
  
  <node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" clear_params="true">

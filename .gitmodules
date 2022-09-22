@@ -29,3 +29,6 @@
 [submodule "src/realsense_gazebo_plugin"]
 	path = src/realsense_gazebo_plugin
 	url = https://github.com/SevenRobotics/realsense_gazebo_plugin.git
+[submodule "src/seven_robot_navigation"]
+	path = src/seven_robot_navigation
+	url = https://github.com/Tal-seven/seven_robot_navigation.git
