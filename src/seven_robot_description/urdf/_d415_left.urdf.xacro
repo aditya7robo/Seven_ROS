@@ -11,7 +11,7 @@ aluminum peripherial evaluation case.
   <!-- Includes -->
   <xacro:include filename="$(find seven_robot_description)/urdf/_materials.urdf.xacro" />
 
-  <xacro:macro name="sensor_d415_left" params="parent *origin  name:=camera  use_nominal_extrinsics:=false">
+  <xacro:macro name="d415_left" params="parent *origin  name  use_nominal_extrinsics:=false">
     <xacro:property name="M_PI" value="3.1415926535897931" />
 
     <!-- The following values are approximate, and the camera node

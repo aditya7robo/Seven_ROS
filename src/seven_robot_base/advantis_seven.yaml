@@ -1,0 +1,7 @@
+image: SR/src/seven_robot_base/advantis_seven.yaml.pgm
+resolution: 0.050000
+origin: [-7.816538, -10.776867, 0.000000]
+negate: 0
+occupied_thresh: 0.65
+free_thresh: 0.196
+

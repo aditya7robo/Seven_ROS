@@ -1,0 +1,53 @@
+<launch>
+ <arg name="manager"/>
+ <arg name="camera1"/>
+ <arg name="camera2"/>
+	<group ns="$(arg camera1)">
+        <include file="$(find realsense2_camera)/launch/includes/nodelet.launch.xml">
+          <arg name="external_manager" value="true"/>
+	  <arg name="manager" value="$(arg manager)"/>
+          <arg name="tf_prefix" value="$(arg camera1)"/>
+	  <arg name="serial_no" value="802212060737"/>
+          <arg name="enable_pointcloud" value="true"/>
+          <arg name="enable_depth" value="true"/>
+	  <arg name="align_depth" value="false"/>
+          <arg name="depth_height" value="480"/>
+          <arg name="depth_width" value="640"/>
+          <arg name="color_width" value="640"/>
+          <arg name="color_height" value="480"/>
+          <arg name="filters" value="decimation"/>
+          <arg name="publish_tf" value="true"/>
+	  <arg name="tf_publish_rate" value="100"/>
+	</include>
+	</group>
+
+	
+	<!--include file="$(find timed_roslaunch)/timed_roslaunch.launch">
+    	<arg name="time" value="5" />
+    	<arg name="pkg" value="realsense2_camera" />
+    	<arg name="file" value="rs_rgbd.launch" />
+    	<arg name="value" value="external_manager:=true manager:=$(arg manager) camera:=$(arg camera2) 
+	serial_no:=746112061094 enable_pointcloud:=true enable_depth:=true depth_height:=480 
+	depth_width:=640 color_height:=480 color_height:=640 filters:=decimation publish_tf:=true tf_publish_rate:=100" />
+    	<arg name="node_name" value="timed_roslaunch" />
+  	</include-->
+	
+	<group ns="$(arg camera2)">
+	<include file="$(find realsense2_camera)/launch/includes/nodelet.launch.xml">
+	  <arg name="external_manager" value="true"/>
+	  <arg name="manager" value="$(arg manager)"/>
+	  <arg name="tf_prefix" value="$(arg camera2)"/>
+	  <arg name="serial_no" value="746112061094"/>
+          <arg name="enable_pointcloud" value="true"/>
+          <arg name="enable_depth" value="true"/>
+	  <arg name="align_depth" value="false"/>
+          <arg name="depth_height" value="480"/>
+          <arg name="depth_width" value="640"/>
+          <arg name="color_width" value="640"/>
+          <arg name="color_height" value="480"/>
+          <arg name="filters" value="decimation"/>
+ 	  <arg name="publish_tf" value="true"/>
+	  <!--arg name="tf_publish_rate" value="100"/-->
+        </include>
+	</group>
+</launch>

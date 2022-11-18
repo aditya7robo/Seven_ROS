@@ -6,31 +6,83 @@
 	<arg name="publishcanTf" value="false"/>
 	<arg name="motors_enabled" value="true"/>
 	<arg name="delay" value="30"/>
+	<arg name="camera_manager" value="depthManager"/>
+	<arg name="baseFrame" value="base_link"/>
+	<arg name="camera1" value="sensor_d415_right"/>
+	<arg name="camera2" value="sensor_d415_left"/>
+	<arg name="localize" default="false"/>
 
-	<include file="$(find seven_robot_localization)/launch/seven_robot_localization.launch">
-	 <arg name="realsense_enabled" default="$(arg realsense_enabled)"/>
-	</include>
+	<include file="$(find seven_robot_description)/launch/description.launch">
+	 <arg name="simulation" default="false"/>
+	 <arg name="camera_name_right" value="$(arg camera1)"/>
+	 <arg name="camera_name_left" value="$(arg camera2)"/>
+	 </include>
+	<!--node pkg="seven_robot_base" type="seven_robot_base" name="seven_robot_base" output="screen">
+	<rosparam file="$(find seven_robot_base)/params/system.yaml" command="load"/>
+	</node-->
+	<group if="$(arg realsense_enabled)">
+	<node pkg="nodelet" type="nodelet" name="$(arg camera_manager)" args="manager" output="screen">
+	</node>
+	
+	<include file="$(find seven_robot_base)/launch/dual_realsense.launch">
+	 <arg name="manager" value="/$(arg camera_manager)"/>
+	 <arg name="camera1" value="$(arg camera1)"/>
+ 	 <arg name="camera2" value="$(arg camera2)"/>
+ 	</include>	
+
+	<!--include file="$(find timed_roslaunch)/timed_roslaunch.launch">
+        <arg name="time" value="5" />
+        <arg name="pkg" value="seven_depth_utils" />
+        <arg name="file" value="depth.launch" />
+	<arg name="value" value="camera1Topic:=/$(arg camera1)/depth/color/points 
+	camera2Topic:=/$(arg camera2)/depth/color/points baseFrame:=$(arg baseFrame)
+	camera1Frame:=$(arg camera1)_depth_optical_frame camera2Frame:=$(arg camera2)_depth_optical_frame
+	manager:=$(arg camera_manager)"/>
+        <arg name="node_name" value="timed_roslaunch" />
+        </include-->
+	
+	<!--include file="$(find seven_depth_utils)/launch/depth.launch">
+	 <arg name="camera1Topic" value="/$(arg camera1)/depth/color/points"/>
+	 <arg name="camera2Topic" value="/$(arg camera2)/depth/color/points"/>
+	 <arg name="baseFrame" value="$(arg baseFrame)"/>
+	 <arg name="camera1Frame" value="$(arg camera1)_depth_optical_frame"/>
+	 <arg name="camera2Frame" value="$(arg camera2)_depth_optical_frame"/>
+	 <arg name="manager" value="$(arg camera_manager)"/>
+ 	</include-->
+	
+	<!--include file="$(find seven_robot_perception)/launch/organizedMultiPlaneSegmentation.launch">
+	 <arg name="manager" value="/$(arg camera_manager)"/>
+         <arg name="topic" value="mergedCloud"/>
+ 	</include-->
+	</group>	
 
 	<group if="$(arg enable_Laser)">
-		<include file="$(find seven_robot_localization)/launch/sick_driver.launch"/>
-  </group>
+	 <include file="$(find seven_robot_localization)/launch/sick_driver.launch"/>
+        </group>
 	
   	<node pkg="joy" type="joy_node" name="joy_node">
 	<rosparam file="$(find seven_robot_base)/params/system.yaml" command="load"/>
 	</node>
 	<node pkg="teleop_twist_joy" type="teleop_node" name="teleop_twist_joy"/>
 	
-	<include file="$(find seven_robot_description)/launch/description.launch">
-	<arg name="simulation" default="false"/>
+
+	<group unless="$(arg localize)">
+	 <include file="$(find slam_toolbox)/launch/online_sync.launch"/>	
+	</group>
+
+	<include file="$(find seven_robot_localization)/launch/seven_robot_localization.launch">
+	<arg name="localize" value="$(arg localize)"/>
 	</include>
-	
-  <node pkg="diagnostic_aggregator" type="aggregator_node" name="diag_agg">
-		<rosparam command="load" file="$(find seven_robot_base)/analyzers.yaml"/>
+
+	<include file="$(find seven_robot_navigation)/launch/global_navigation.launch"/>
+
+  	<node pkg="diagnostic_aggregator" type="aggregator_node" name="diag_agg">
+	 <rosparam command="load" file="$(find seven_robot_base)/analyzers.yaml"/>
 	</node>	
 	
 	<node name="robotParser" type="robotParser" pkg="seven_robot_description"/> 
 	
-	<include file="$(find slam_toolbox)/launch/online_sync.launch"/>	
+	<node name="robot_state_publisher" type="robot_state_publisher" pkg="robot_state_publisher"/>
 	
 	<!--group>
 	 <machine name="sevenPC1" address="sevenPC1" user="talha" env-loader="/home/talha/SevenRobotics/Seven_ROS/env_loader_sevenPC1.sh" default="true"/>

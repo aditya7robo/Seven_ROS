@@ -32,3 +32,15 @@
 [submodule "src/seven_robot_navigation"]
 	path = src/seven_robot_navigation
 	url = https://github.com/Tal-seven/seven_robot_navigation.git
+[submodule "src/navigation"]
+	path = src/navigation
+	url = https://github.com/ros-planning/navigation.git
+[submodule "src/slam_toolbox"]
+	path = src/slam_toolbox
+	url = https://github.com/SteveMacenski/slam_toolbox.git
+[submodule "src/realsense-ros"]
+	path = src/realsense-ros
+	url = https://github.com/IntelRealSense/realsense-ros.git
+[submodule "src/seven_depth_utils"]
+	path = src/seven_depth_utils
+	url = https://github.com/Tal-seven/seven_depth_utils.git

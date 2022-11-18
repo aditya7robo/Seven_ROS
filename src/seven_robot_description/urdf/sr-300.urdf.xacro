@@ -36,12 +36,11 @@
 <robot name="sr-300" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
 	<xacro:property name="PI" value="3.14159"/>		
-  <xacro:arg name="use_nominal_extrinsics" default="false"/>	
+  	<xacro:arg name="use_nominal_extrinsics" default="false"/>	
 
 	<xacro:include filename="$(find seven_robot_description)/urdf/sr-300.gazebo"/>
 	<xacro:include filename="$(find seven_robot_description)/urdf/pu_wheel_sr300.urdf.xacro"/>
-	<xacro:include filename="$(find seven_robot_description)/urdf/_d415_left.urdf.xacro"/>
-	<xacro:include filename="$(find seven_robot_description)/urdf/_d415_right.urdf.xacro"/>
+	<xacro:include filename="$(find seven_robot_description)/urdf/_d415.urdf.xacro"/>
 	<xacro:include filename="$(find seven_robot_description)/urdf/_d415.gazebo.xacro"/> 
 	<xacro:include filename="$(find seven_robot_description)/urdf/sick_lms1xx.urdf.xacro"/>
 	<xacro:include filename="$(find seven_robot_description)/urdf/caster_wheel.urdf.xacro"/>
@@ -123,7 +122,16 @@
 		<headingDrift>0.005</headingDrift>
 		<headingGaussianNoise>0.005</headingGaussianNoise>
 	 </plugin>
-  </gazebo>					
+  	</gazebo>					
+
+	<xacro:sensor_d415 parent="base_link" name="$(arg camera_name_left)" use_nominal_extrinsics="$(arg use_nominal_extrinsics)">
+	 <origin xyz="0.415 0.1178 0.022233" rpy="-1.6002679 -0.2219 -0.439"/>
+	</xacro:sensor_d415>
+
+	<xacro:sensor_d415 parent="base_link" name="$(arg camera_name_right)" use_nominal_extrinsics="$(arg use_nominal_extrinsics)">
+	 <origin xyz="0.415 -0.0928 0.025233" rpy="-1.5413221 -0.3219 0.439"/>
+	</xacro:sensor_d415>
+  
 	
 	<joint name="sick_base_joint" type="fixed">
 	 <origin xyz="0.375 -0.219 0.13329" rpy="${PI} 0 -${PI/4}"/>
@@ -141,15 +149,7 @@
 
 	<xacro:sick_lms_1xx name="sick" ros_topic="scan"/>
 
-	<xacro:sensor_d415_left parent="base_link" name="$(arg camera_name_left)" use_nominal_extrinsics="$(arg use_nominal_extrinsics)">
-	 <origin xyz="0.415 0.1178 0.022233" rpy="1.6002679 -0.2219 -0.439"/>
-	</xacro:sensor_d415_left>
-
-	<xacro:sensor_d415_right parent="base_link" name="$(arg camera_name_right)" use_nominal_extrinsics="$(arg use_nominal_extrinsics)">
-	 <origin xyz="0.415 -0.0928 0.025233" rpy="1.5413221 -0.3219 0.439"/>
-	</xacro:sensor_d415_right>
-  
-	
+		
 	<xacro:gazebo_d435 camera_name="$(arg camera_name_left)" reference_link="$(arg camera_name_left)_link" topics_ns="/" depth_optical_frame="$(arg camera_name_left)_depth_optical_frame" color_optical_frame="$(arg camera_name_left)_color_optical_frame" infrared1_optical_frame="$(arg camera_name_left)_infrared1_optical_frame" infrared2_optical_frame="$(arg camera_name_left)_infrared2_optical_frame"/>	
     <xacro:gazebo_d435 camera_name="$(arg camera_name_right)" reference_link="$(arg camera_name_right)_link" topics_ns="/" depth_optical_frame="$(arg camera_name_right)_depth_optical_frame" color_optical_frame="$(arg camera_name_right)_color_optical_frame" infrared1_optical_frame="$(arg camera_name_right)_infrared1_optical_frame" infrared2_optical_frame="$(arg camera_name_right)_infrared2_optical_frame"/>
 </robot>

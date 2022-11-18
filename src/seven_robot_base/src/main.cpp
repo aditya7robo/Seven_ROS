@@ -41,11 +41,14 @@
 #include <gattlib.h>
 #include <ros/ros.h>
 #include <thread>
+#include <mutex>
 #include <seven_robotics_msgs/Led.h>
 #include <seven_robotics_msgs/CanAlive.h>
+#include <seven_robot_utils/delegate.hpp>
+#include <seven_robotics_msgs/BLEControllerStatus.h>
 
 static GMainLoop *m_main_loop;
-static delegate<void (void* x)> disconnectHandlerDelegate;
+static delegate<void (void)> disconnectHandlerDelegate;
 
 static void notification_handler(const uuid_t *uuid, const uint8_t *data, size_t data_length, void *user_data)
 {
@@ -59,14 +62,16 @@ static void notification_handler(const uuid_t *uuid, const uint8_t *data, size_t
 
 static void disconnect_handler(void *x)
 {
-    printf("Disconnected %p\n", x);
-    disconnected = true;
+   if(disconnectHandlerDelegate != nullptr)
+   {
+     disconnectHandlerDelegate();
+   }	
 }
 
 static void on_user_abort(int arg)
 {
     g_main_loop_quit(m_main_loop);
-    ros::shutDown();
+    ros::shutdown();
 }
 
 class robotLedController
@@ -92,7 +97,7 @@ public:
     bool shouldStop = false;
     std::thread canHeartBeatMonitor;
 
-    robotLedController(ros::Node& _node) : node{_node}
+    robotLedController(ros::NodeHandle& _node) : node{_node}
     {
         timeSinceInit = ros::Time::now();
         gaugeAliveSub = node.subscribe("/CANBatteryAlive", 10, &robotLedController::gaugeCallback, this, ros::TransportHints().tcpNoDelay());
@@ -172,7 +177,7 @@ public:
     void gaugeCallback(const seven_robotics_msgs::CanAlive &msg);
     void motorCallback(const seven_robotics_msgs::CanAlive &msg);
     void ledCallback(const seven_robotics_msgs::CanAlive &msg);
-    void spin();
+    void stopThread();
 };
 
 class bluetoothMonitor
@@ -181,47 +186,50 @@ public:
     std::thread monitorThread;
     std::thread pubThread;
     std::string bdAddr;
-    bluetoothMonitor(ros::NodeHandle& _node):node{_node}
+    bluetoothMonitor(ros::NodeHandle& _node,ros::Publisher& pub):node{_node},bluetoothStatusPub{pub}
     {
-        status.state = seven_robotics_msgs::BLEControllerStatus::IDLE
-        disconnectHandlerDelegate = delegate<void (void *)>::from(this,&bluetoothMonitor::disconnectCallback);
-        bluetoothStatusPub = node.advertise<seven_robotics_msgs::BLEControllerStatus>("/bleControllerStatus",1);
-        bdAddr = node.getParam("blecontroller_mac",bdAddr);
-        monitorThread = std::thread([&]()
+	ros::NodeHandle nh("~");
+        status.state = seven_robotics_msgs::BLEControllerStatus::IDLE;
+        disconnectHandlerDelegate = delegate<void (void)>::from(this,&bluetoothMonitor::disconnectCallback);
+        if(nh.hasParam("blecontroller_mac"))
+	{
+	 nh.getParam("blecontroller_mac",bdAddr);
+	}
+	else  
+	 ROS_INFO("PARAM NOT FOUND");
+	monitorThread = std::thread([&]()
         {
             gatt_connection_t *connection;
 
             while (!shouldStop)
             {
-                ROS_INFO(stderr, "Attempting connection\n");
+                ROS_INFO("Attempting connection\n");
                 connection = gattlib_connect(NULL, bdAddr.c_str(), GATTLIB_CONNECTION_OPTIONS_LEGACY_DEFAULT);
                 if (connection == NULL)
                 {
-                    ROS_INFO(stderr, "Failed to connect to the bluetooth device.\n");
+		    ROS_INFO("Failed to connect to the bluetooth device.\n");
                     std::this_thread::sleep_for(std::chrono::seconds(1));
                     continue;
                 }
-                ROS_INFO(stderr, "Connected: %p\n", connection);
+                ROS_INFO("Connected: %p\n", connection);
                 disconnected = false;
                 status.state = seven_robotics_msgs::BLEControllerStatus::CONNECTED;
                 gattlib_register_on_disconnect(connection, disconnect_handler, connection);
 
                 while (!disconnected)
                 {
-                    fprintf(stderr, "Still connected...\n");
-                    std::this_thread::sleep_for(std::chrono::seconds(1));
+                    ROS_INFO("Still connected...\n");
+		    std::this_thread::sleep_for(std::chrono::seconds(1));
                 }
 
                 gattlib_disconnect(connection);
 
-                fprintf(stderr, "Finished everything, retrying...\n");
+                ROS_INFO("Finished everything, retrying...\n");
                 std::this_thread::sleep_for(std::chrono::seconds(1));
-
-                return NULL;
-            }
+	    }
 
             gattlib_disconnect(connection);
-
+	    return NULL;
         });
 
         pubThread = std::thread([&](){
@@ -236,11 +244,11 @@ public:
         });
     }
 
-void disconnectCallback(void* x)
+void disconnectCallback()
 {
     std::lock_guard<std::mutex> lock(pubMutex);
     seven_robotics_msgs::BLEControllerStatus msg;
-    status.state = seven_robotics_msgs::BLEControllerStatus::DISCONNECTED
+    status.state = seven_robotics_msgs::BLEControllerStatus::DISCONNECTED;
     disconnected = true;
 }
 
@@ -249,7 +257,7 @@ void stopThread() {
 }
 
 private:
-ros::Publisher bluetoothStatusPub;
+ros::Publisher& bluetoothStatusPub;
 seven_robotics_msgs::BLEControllerStatus status;
 ros::NodeHandle& node;
 std::mutex pubMutex;
@@ -281,21 +289,19 @@ void robotLedController::ledCallback(const seven_robotics_msgs::CanAlive &msg)
     ledTimeStamp = msg.header.stamp;
 }
 
-void robotLedController::spin()
+void robotLedController::stopThread()
 {
-    while (ros::ok())
-    {
-        ros::spinOnce();
-    }
     shouldStop = true;
 }
 
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "ledControllerNode");
-    ros::nodeHandle nh;
-    robotLedController controller(nh);
+    ros::NodeHandle nh;
+    //robotLedController controller(nh);
+    ros::Publisher pub = nh.advertise<seven_robotics_msgs::BLEControllerStatus>("/bleControllerStatus",1);
 
+    bluetoothMonitor bleMonitor(nh,pub);
     //clean the connection and node when sigint received
     signal(SIGINT, on_user_abort);
 	
@@ -307,9 +313,9 @@ int main(int argc, char **argv)
         ros::spinOnce();
     }
     
-    controller.stopThread();
+    //controller.stopThread();
     bleMonitor.stopThread();
-    controller.canHeartBeatMonitor.join();
+    //controller.canHeartBeatMonitor.join();
     bleMonitor.pubThread.join();
     bleMonitor.monitorThread.join();
     // In case we quit the main loop, clean the connection
