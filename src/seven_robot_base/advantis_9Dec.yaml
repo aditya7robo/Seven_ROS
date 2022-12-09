@@ -1,0 +1,7 @@
+image: advantis_9Dec.pgm
+resolution: 0.050000
+origin: [-7.754698, -27.358314, 0.000000]
+negate: 0
+occupied_thresh: 0.65
+free_thresh: 0.196
+

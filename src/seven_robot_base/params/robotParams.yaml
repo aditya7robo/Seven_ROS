@@ -9,12 +9,12 @@ imuDiagonalCovariance : [99999.0,99999.0,99999.0,
                          0.001137,0.001137,0.001137,
                          0.019137,0.019137,0.049137]
 
-gyroXOffset: 0.0
-gyroYOffset: 0.0
-gyroZOffset: 0.0
-accelXOffset: 0.6617
-accelYOffset: 0.0708
-accelZOffset: 1.2691
+gyroXOffset: 0.003962371
+gyroYOffset: -0.001176953
+gyroZOffset: 0.003525966
+accelXOffset: -0.055562805
+accelYOffset: -1.052895784
+accelZOffset: 0.243524357
 closeLoopControl: true
 imuXInverted: false
 imuYInverted: false
