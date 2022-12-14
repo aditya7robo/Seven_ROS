@@ -6,15 +6,15 @@ odomDiagonalCovariance: [0.001,0.001,1000000.0,
 imuDiagonalCovariance : [99999.0,99999.0,99999.0,
                          0.4e-5,0.4e-5,0.4e-5,
                          0.000657,0.000657,0.000657,
-                         0.001137,0.001137,0.001137,
+                         0.001137,0.001137,0.01137,
                          0.019137,0.019137,0.049137]
 
-gyroXOffset: 0.0
-gyroYOffset: 0.0
-gyroZOffset: 0.0
-accelXOffset: 0.6617
-accelYOffset: 0.0708
-accelZOffset: 1.2691
+gyroXOffset: -0.004045101
+gyroYOffset: 0.001244213
+gyroZOffset: 0.006782583
+accelXOffset: -0.049651853
+accelYOffset: -0.123018071
+accelZOffset: 1.220626592
 closeLoopControl: true
 imuXInverted: false
 imuYInverted: false

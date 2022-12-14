@@ -44,3 +44,9 @@
 [submodule "src/seven_depth_utils"]
 	path = src/seven_depth_utils
 	url = https://github.com/Tal-seven/seven_depth_utils.git
+[submodule "src/move_base_flex"]
+	path = src/move_base_flex
+	url = https://github.com/magazino/move_base_flex.git
+[submodule "src/simple_move_behaviortree"]
+	path = src/simple_move_behaviortree
+	url = https://github.com/Tal-seven/simple_move_behaviortree.git
