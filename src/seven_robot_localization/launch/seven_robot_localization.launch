@@ -5,7 +5,7 @@
  </node>
 
  <group if="$(arg localize)">
-   <arg name="map_file" default="$(find seven_robot_base)/advantis.yaml"/>
+   <arg name="map_file" default="$(find seven_robot_base)/advantis_14Dec.yaml"/>
    <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>
    <node pkg="amcl" type="amcl" name="amcl">
     <rosparam command="load" file="$(find seven_robot_localization)/params/amcl.yaml"/>

@@ -50,3 +50,6 @@
 [submodule "src/simple_move_behaviortree"]
 	path = src/simple_move_behaviortree
 	url = https://github.com/Tal-seven/simple_move_behaviortree.git
+[submodule "src/BehaviorTree.CPP"]
+	path = src/BehaviorTree.CPP
+	url = https://github.com/BehaviorTree/BehaviorTree.CPP.git
