@@ -7,7 +7,7 @@
           <arg name="external_manager" value="true"/>
 	  <arg name="manager" value="$(arg manager)"/>
           <arg name="tf_prefix" value="$(arg camera1)"/>
-	  <arg name="serial_no" value="802212060549"/>
+	  <arg name="serial_no" value="802212060737"/>
           <arg name="enable_pointcloud" value="true"/>
           <arg name="enable_depth" value="true"/>
 	  <arg name="align_depth" value="false"/>
@@ -37,7 +37,7 @@
 	  <arg name="external_manager" value="true"/>
 	  <arg name="manager" value="$(arg manager)"/>
 	  <arg name="tf_prefix" value="$(arg camera2)"/>
-	  <arg name="serial_no" value="751412060355"/>
+	  <arg name="serial_no" value="746112061094"/>
           <arg name="enable_pointcloud" value="true"/>
           <arg name="enable_depth" value="true"/>
 	  <arg name="align_depth" value="false"/>

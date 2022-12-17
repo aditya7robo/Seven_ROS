@@ -89,7 +89,7 @@
 	</group-->
 
 	<group>
-    	<machine name="udooqdl" address="192.168.2.23" user="root" env-loader="/home/root/Seven_ROS/env_loader_udooqdl.sh" default="true"/>
+    	<machine name="udooqdl" address="192.168.1.23" user="root" env-loader="/home/root/Seven_ROS/env_loader_udooqdl.sh" default="true"/>
 	  <rosparam file="$(find seven_robot_base)/params/robotParams.yaml" command="load" ns="$(arg uavcanNs)/uavcan_ros_bridge"/>
 	  <rosparam file="$(find seven_robot_localization)/params/diff_drive.yaml" command="load" ns="$(arg uavcanNs)/uavcan_ros_bridge"/>
 	  <include file="$(find uavcan_ros_bridge)/launch/uavcan_ros_bridge.launch">
