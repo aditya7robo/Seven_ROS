@@ -7,6 +7,8 @@
   <arg name="gui" default="true"/>
   <arg name="headless" default="false"/>
   <arg name="debug" default="false"/>
+  <arg name="camera1" value="sensor_d415_right"/>
+	<arg name="camera2" value="sensor_d415_left"/>
   
  <include file="$(find gazebo_ros)/launch/empty_world.launch">
 	<arg name="world_name" value="$(find aws_robomaker_small_warehouse_world)/worlds/no_roof_small_warehouse.world "/>
@@ -19,6 +21,8 @@
 
 	<include file="$(find seven_robot_description)/launch/description.launch">
 	 <arg name="simulation" value="true"/>
+	 <arg name="camera_name_right" value="$(arg camera1)"/>
+	 <arg name="camera_name_left" value="$(arg camera2)"/>
 	</include>
  
 	<node pkg="robot_localization" type="ekf_localization_node" name="ekf_localization" clear_params="true">
@@ -31,5 +35,5 @@
 	<node pkg="joy" type="joy_node" name="joy_node"/>
 	<node pkg="teleop_twist_joy" type="teleop_node" name="teleop_twist_joy"/>
 	
-  <include file="$(find slam_toolbox)/online_sync.launch"/>
+  <include file="$(find slam_toolbox)/launch/online_sync.launch"/>
 </launch>

@@ -56,3 +56,9 @@
 [submodule "src/spatio_temporal_voxel_layer"]
 	path = src/spatio_temporal_voxel_layer
 	url = https://github.com/SteveMacenski/spatio_temporal_voxel_layer.git
+[submodule "src/seven_bt_plugins"]
+	path = src/seven_bt_plugins
+	url = https://github.com/Tal-seven/seven_bt_plugins.git
+[submodule "src/seven_robot_behaviors"]
+	path = src/seven_robot_behaviors
+	url = https://github.com/Tal-seven/seven_robot_behaviors.git
