@@ -62,3 +62,9 @@
 [submodule "src/seven_robot_behaviors"]
 	path = src/seven_robot_behaviors
 	url = https://github.com/Tal-seven/seven_robot_behaviors.git
+[submodule "src/seven_costmap_utils"]
+	path = src/seven_costmap_utils
+	url = https://github.com/Tal-seven/seven_costmap_utils.git
+[submodule "src/seven_bt_navigator"]
+	path = src/seven_bt_navigator
+	url = https://github.com/Tal-seven/seven_bt_navigator.git
