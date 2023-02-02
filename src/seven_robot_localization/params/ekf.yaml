@@ -39,7 +39,7 @@ imu0_config: [false,false,false,
               false,false,false,
               false,false,false,
               true,true,true,
-              true,false,true] 
+              false,false,true] 
 
 imu0_nodelay: true
 
