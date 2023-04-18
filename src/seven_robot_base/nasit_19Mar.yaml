@@ -1,0 +1,7 @@
+image: nasit_19Mar.pgm
+resolution: 0.050000
+origin: [-2.832396, -24.565798, 0.000000]
+negate: 0
+occupied_thresh: 0.65
+free_thresh: 0.196
+

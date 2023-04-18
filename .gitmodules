@@ -68,3 +68,15 @@
 [submodule "src/seven_bt_navigator"]
 	path = src/seven_bt_navigator
 	url = https://github.com/Tal-seven/seven_bt_navigator.git
+[submodule "src/teb_local_planner"]
+	path = src/teb_local_planner
+	url = https://github.com/rst-tu-dortmund/teb_local_planner.git
+[submodule "src/sick_scan"]
+	path = src/sick_scan
+	url = https://github.com/SICKAG/sick_scan.git
+[submodule "src/seven_mission_handler"]
+	path = src/seven_mission_handler
+	url = https://github.com/Tal-seven/seven_mission_handler.git
+[submodule "src/perception_pcl"]
+	path = src/perception_pcl
+	url = https://github.com/ros-perception/perception_pcl.git

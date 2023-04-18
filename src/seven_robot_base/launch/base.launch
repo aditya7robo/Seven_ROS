@@ -11,7 +11,10 @@
 	<arg name="camera1" value="sensor_d415_right"/>
 	<arg name="camera2" value="sensor_d415_left"/>
 	<arg name="localize" default="false"/>
+	<arg name="test_navigation" default="false"/>
 
+	
+	
 	<include file="$(find seven_robot_description)/launch/description.launch">
 	 <arg name="simulation" default="false"/>
 	 <arg name="camera_name_right" value="$(arg camera1)"/>
@@ -20,6 +23,11 @@
 	<!--node pkg="seven_robot_base" type="seven_robot_base" name="seven_robot_base" output="screen">
 	<rosparam file="$(find seven_robot_base)/params/system.yaml" command="load"/>
 	</node-->
+
+	<group if="$(arg enable_Laser)">
+	 <include file="$(find seven_robot_localization)/launch/sick_driver.launch"/>
+    </group>
+
 	<group if="$(arg realsense_enabled)">
 	<node pkg="nodelet" type="nodelet" name="$(arg camera_manager)" args="manager" output="screen">
 	</node>
@@ -29,7 +37,6 @@
 	 <arg name="camera1" value="$(arg camera1)"/>
  	 <arg name="camera2" value="$(arg camera2)"/>
  	</include>	
-
 	<!--include file="$(find timed_roslaunch)/timed_roslaunch.launch">
         <arg name="time" value="5" />
         <arg name="pkg" value="seven_depth_utils" />
@@ -56,13 +63,11 @@
  	</include-->
 	</group>	
 
-	<group if="$(arg enable_Laser)">
-	 <include file="$(find seven_robot_localization)/launch/sick_driver.launch"/>
-        </group>
 	
   	<node pkg="joy" type="joy_node" name="joy_node">
-	<rosparam file="$(find seven_robot_base)/params/system.yaml" command="load"/>
+		<rosparam file="$(find seven_robot_base)/params/system.yaml" command="load"/>
 	</node>
+
 	<node pkg="teleop_twist_joy" type="teleop_node" name="teleop_twist_joy"/>
 	
 	<group unless="$(arg localize)">
@@ -72,17 +77,20 @@
 	<include file="$(find seven_robot_localization)/launch/seven_robot_localization.launch">
 		<arg name="localize" value="$(arg localize)"/>
 	</include>
-
-	<include file="$(find seven_robot_navigation)/launch/global_navigation.launch"/>
+	
+	
 
   	<node pkg="diagnostic_aggregator" type="aggregator_node" name="diag_agg">
-	 <rosparam command="load" file="$(find seven_robot_base)/analyzers.yaml"/>
+		<rosparam command="load" file="$(find seven_robot_base)/analyzers.yaml"/>
 	</node>	
 	
 	<node name="robotParser" type="robotParser" pkg="seven_robot_description"/> 
 	
 	<node name="robot_state_publisher" type="robot_state_publisher" pkg="robot_state_publisher"/>
 	
+	<group if="$(arg localize)">
+		<include file="$(find seven_robot_navigation)/launch/global_navigation.launch"/>
+	</group>
 	<!--group>
 	 <machine name="sevenPC1" address="sevenPC1" user="talha" env-loader="/home/talha/SevenRobotics/Seven_ROS/env_loader_sevenPC1.sh" default="true"/>
 	 <node name="rviz" pkg="rviz" type="rviz" args="-d `rospack find seven_robot_description`/rviz/description.rviz"/>
@@ -90,14 +98,14 @@
 
 	<group>
     	<machine name="udooqdl" address="192.168.1.23" user="root" env-loader="/home/root/Seven_ROS/env_loader_udooqdl.sh" default="true"/>
-	  <rosparam file="$(find seven_robot_base)/params/robotParams.yaml" command="load" ns="$(arg uavcanNs)/uavcan_ros_bridge"/>
-	  <rosparam file="$(find seven_robot_localization)/params/diff_drive.yaml" command="load" ns="$(arg uavcanNs)/uavcan_ros_bridge"/>
-	  <include file="$(find uavcan_ros_bridge)/launch/uavcan_ros_bridge.launch">
-	    <arg name="uavcanNs" value="$(arg uavcanNs)"/>
-	    <arg name="laser_enabled" default="$(arg enable_Laser)"/>
-	    <arg name="publishuavcanTf" default="$(arg publishcanTf)"/>
-	    <arg name="enableMotors" default="$(arg motors_enabled)"/>
-	  </include>
+	  	<rosparam file="$(find seven_robot_base)/params/robotParams.yaml" command="load" ns="$(arg uavcanNs)/uavcan_ros_bridge"/>
+	  	<rosparam file="$(find seven_robot_localization)/params/diff_drive.yaml" command="load" ns="$(arg uavcanNs)/uavcan_ros_bridge"/>
+	  	<include file="$(find uavcan_ros_bridge)/launch/uavcan_ros_bridge.launch">
+	   		<arg name="uavcanNs" value="$(arg uavcanNs)"/>
+	    	<arg name="laser_enabled" default="$(arg enable_Laser)"/>
+	    	<arg name="publishuavcanTf" default="$(arg publishcanTf)"/>
+	    	<arg name="enableMotors" default="$(arg motors_enabled)"/>
+	  	</include>
 	</group>
   
  </launch>
