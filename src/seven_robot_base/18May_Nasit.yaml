@@ -1,0 +1,7 @@
+image: 18May_Nasit.pgm
+resolution: 0.050000
+origin: [-2.642024, -23.061695, 0.000000]
+negate: 0
+occupied_thresh: 0.65
+free_thresh: 0.196
+
