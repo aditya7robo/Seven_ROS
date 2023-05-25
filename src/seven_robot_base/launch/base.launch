@@ -71,7 +71,7 @@
 	<node pkg="teleop_twist_joy" type="teleop_node" name="teleop_twist_joy"/>
 	
 	<group unless="$(arg localize)">
-		<include file="$(find slam_toolbox)/launch/lifelong.launch"/>	
+		<include file="$(find slam_toolbox)/launch/online_sync.launch"/>	
 	</group>
 	
 	<include file="$(find seven_robot_localization)/launch/seven_robot_localization.launch">
