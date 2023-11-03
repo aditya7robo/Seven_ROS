@@ -80,3 +80,9 @@
 [submodule "src/perception_pcl"]
 	path = src/perception_pcl
 	url = https://github.com/ros-perception/perception_pcl.git
+[submodule "src/closest_point_of_approach"]
+	path = src/closest_point_of_approach
+	url = https://github.com/Tal-seven/closest_point_of_approach.git
+[submodule "src/seven_path_smoother"]
+	path = src/seven_path_smoother
+	url = https://github.com/Tal-seven/seven_path_smoother.git
