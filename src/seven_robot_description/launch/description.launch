@@ -4,14 +4,23 @@
 	<arg name="robot_namespace" default="/"/>
 	<arg name="camera_name_left"/>
 	<arg name="camera_name_right"/>
+	<arg name="single_camera_name" default="camera"/>
 	<arg name="laser_enabled"/>
 	<arg name="simulation"/>
-	<param name="robot_description" command="$(find xacro)/xacro '$(find seven_robot_description)/urdf/sr-300.urdf.xacro'
-	 --inorder
-	 robot_namespace:=$(arg robot_namespace)
-	 camera_name_left:=$(arg camera_name_left)
-	 camera_name_right:=$(arg camera_name_right)"/>
- 
+	<arg name="dual_realsense"/>
+	<group if="$(arg dual_realsense)">
+		<param name="robot_description" command="$(find xacro)/xacro '$(find seven_robot_description)/urdf/sr-300.urdf.xacro'
+	 	--inorder
+	 	robot_namespace:=$(arg robot_namespace)
+	 	camera_name:=$(arg single_camera_name)"/>
+	</group>
+	
+	<group unless="$(arg dual_realsense)">
+		<param name="robot_description" command="$(find xacro)/xacro '$(find seven_robot_description)/urdf/sr-300-single-realsense.urdf.xacro'
+	 	--inorder
+	 	robot_namespace:=$(arg robot_namespace)
+	 	camera_name:=$(arg single_camera_name)"/>
+	</group>
  	 
   	<group if="$(arg simulation)">
 		<node name="joint_state_publisher" type="joint_state_publisher" pkg="joint_state_publisher"/>

@@ -2,47 +2,139 @@
  <arg name="manager"/>
  <arg name="camera1"/>
  <arg name="camera2"/>
-	<group ns="$(arg camera1)">
-        <include file="$(find realsense2_camera)/launch/includes/nodelet.launch.xml">
-          <arg name="external_manager" value="false"/>
-	  	  <!-- <arg name="manager" value="$(arg manager)"/> -->
-          <arg name="tf_prefix" value="$(arg camera1)"/>
-	  	  <arg name="serial_no" value="802212060737"/>
-          <arg name="enable_pointcloud" value="true"/>
-          <arg name="enable_depth" value="true"/>
-	  	  <arg name="align_depth" value="false"/>
-          <arg name="depth_height" value="720"/>
-          <arg name="depth_width" value="1280"/>
-          <arg name="color_width" value="1280"/>
-          <arg name="color_height" value="720"/>
-		  <arg name="clip_distance" value="4.0"/>
-		  <arg name="filters" value="decimation,temporal"/>
-		  <arg name="json_file_path" value="$(find seven_robot_base)/config/realsense_depth_filter.json"/>
-          <!--arg name="filters" value="decimation"/-->
-          <!--arg name="publish_tf" value="true"/>
-	  			<arg name="tf_publish_rate" value="1000"/-->
-		</include>
-	</group>
-	
-	<group ns="$(arg camera2)">
+ <arg name="baseFrame"/>
+ <arg name="align_depth"         default="true"/>
+
+ <!-- rgbd_launch specific arguments -->
+
+  <!-- Arguments for remapping all device namespaces -->
+  <arg name="rgb"                             default="color" />
+  <arg name="ir"                              default="infra1" />
+  <arg name="depth"                           default="depth" />
+  <arg name="depth_registered_pub"            default="depth_registered" />
+  <arg name="depth_registered"                default="depth_registered" unless="$(arg align_depth)" />
+  <arg name="depth_registered"                default="aligned_depth_to_color" if="$(arg align_depth)" />
+  <arg name="depth_registered_filtered"       default="$(arg depth_registered)" />
+  <arg name="projector"                       default="projector" />
+
+  <!-- Disable bond topics by default -->
+  <arg name="bond"                            default="false" />
+  <arg name="respawn"                         default="$(arg bond)" />
+
+  <!-- Processing Modules -->
+  <arg name="rgb_processing"                  default="true"/>
+  <arg name="debayer_processing"              default="false" />
+  <arg name="ir_processing"                   default="false"/>
+  <arg name="depth_processing"                default="false"/>
+  <arg name="depth_registered_processing"     default="true"/>
+  <arg name="disparity_processing"            default="false"/>
+  <arg name="disparity_registered_processing" default="false"/>
+  <arg name="hw_registered_processing"        default="$(arg align_depth)" />
+  <arg name="sw_registered_processing"        default="true" unless="$(arg align_depth)" />
+  <arg name="sw_registered_processing"        default="false" if="$(arg align_depth)" />
+
+
+  <group ns="$(arg camera1)">
 	  <include file="$(find realsense2_camera)/launch/includes/nodelet.launch.xml">
-	  	<arg name="external_manager" value="false"/>
-	  	<!-- <arg name="manager" value="$(arg manager)"/> -->
-	  	<arg name="tf_prefix" value="$(arg camera2)"/>
-	  	<arg name="serial_no" value="746112061094"/>
+	  	<arg name="external_manager" value="true"/>
+	  	<arg name="manager" value="/$(arg manager)"/>
+	  	<arg name="tf_prefix" value="$(arg camera1)"/>
+	  	<arg name="serial_no" value="925322061947"/>
     	<arg name="enable_pointcloud" value="true"/>
     	<arg name="enable_depth" value="true"/>
-	  	<arg name="align_depth" value="false"/>
+	  	<arg name="align_depth" value="$(arg align_depth)"/>
     	<arg name="depth_height" value="720"/>
     	<arg name="depth_width" value="1280"/>
     	<arg name="color_width" value="1280"/>
     	<arg name="color_height" value="720"/>
-		<arg name="clip_distance" value="4.0"/>
-		<arg name="filters" value="decimation,temporal,spatial,disparity"/>
-		<arg name="json_file_path" value="$(find seven_robot_base)/config/realsense_depth_filter.json"/>
+		  <arg name="clip_distance" value="4.0"/>
+		  <arg name="filters" value="decimation,temporal,spatial,disparity"/>
+		  <arg name="json_file_path" value="$(find seven_robot_base)/config/realsense_depth_filter.json"/>
     	<!--arg name="filters" value="decimation"/>
  	  	<arg name="publish_tf" value="true"/>
 	  	<arg name="tf_publish_rate" value="1000"/-->
-      </include>
+    </include>
+
+	   <!-- RGB processing -->
+    <include if="$(arg rgb_processing)"
+             file="$(find rgbd_launch)/launch/includes/rgb.launch.xml">
+      <arg name="manager"                       value="$(arg manager)" />
+      <arg name="respawn"                       value="$(arg respawn)" />
+      <arg name="rgb"                           value="$(arg rgb)" />
+      <arg name="debayer_processing"            value="$(arg debayer_processing)" />
+    </include>
 	</group>
+	
+	<group ns="$(arg camera2)">
+	  <include file="$(find realsense2_camera)/launch/includes/nodelet.launch.xml">
+	  	<arg name="external_manager" value="true"/>
+	  	<arg name="manager" value="/$(arg manager)"/>
+	  	<arg name="tf_prefix" value="$(arg camera2)"/>
+	  	<arg name="serial_no" value="746112061710"/>
+    	<arg name="enable_pointcloud" value="true"/>
+    	<arg name="enable_depth" value="true"/>
+	  	<arg name="align_depth" value="$(arg align_depth)"/>
+    	<arg name="depth_height" value="720"/>
+    	<arg name="depth_width" value="1280"/>
+    	<arg name="color_width" value="1280"/>
+    	<arg name="color_height" value="720"/>
+		  <arg name="clip_distance" value="4.0"/>
+		  <arg name="filters" value="decimation,temporal,spatial,disparity"/>
+		  <arg name="json_file_path" value="$(find seven_robot_base)/config/realsense_depth_filter.json"/>
+    	<!--arg name="filters" value="decimation"/>
+ 	  	<arg name="publish_tf" value="true"/>
+	  	<arg name="tf_publish_rate" value="1000"/-->
+    </include>
+
+	   <!-- RGB processing -->
+    <include if="$(arg rgb_processing)"
+             file="$(find rgbd_launch)/launch/includes/rgb.launch.xml">
+      <arg name="manager"                       value="$(arg manager)" />
+      <arg name="respawn"                       value="$(arg respawn)" />
+      <arg name="rgb"                           value="$(arg rgb)" />
+      <arg name="debayer_processing"            value="$(arg debayer_processing)" />
+    </include>
+	</group>
+
+
+    <!-- <group if="$(eval depth_registered_processing and hw_registered_processing)"> -->
+      <!-- Publish registered XYZRGB point cloud with hardware registered input (ROS Realsense depth alignment) -->
+      <!-- <node pkg="nodelet" type="nodelet" name="points_xyzrgb_hw_registered"
+            args="load seven_depth_utils/PointCloudMergeNodelet $(arg manager) $(arg bond)" respawn="$(arg respawn)">
+        <remap from="rgb1/image_rect_color"        to="$(arg camera1)/$(arg rgb)/image_raw" />
+        <remap from="rgb2/image_rect_color"        to="$(arg camera2)/$(arg rgb)/image_raw" />
+        <remap from="rgb1/camera_info"             to="$(arg camera1)/$(arg rgb)/camera_info" />
+        <remap from="rgb2/camera_info"             to="$(arg camera2)/$(arg rgb)/camera_info" />
+        <remap from="depth_registered1/image_rect" to="$(arg camera1)/$(arg depth_registered)/image_raw" />
+        <remap from="depth_registered2/image_rect" to="$(arg camera2)/$(arg depth_registered)/image_raw" />
+        <remap from="depth_registered1/points"     to="$(arg camera1)/$(arg depth_registered_pub)/points" />
+        <remap from="depth_registered2/points"     to="$(arg camera2)/$(arg depth_registered_pub)/points" />
+        <param name="rgbd1Frame" value="$(arg camera1)_depth_optical_frame"/>
+        <param name="rgbd2Frame" value="$(arg camera2)_depth_optical_frame"/>
+        <param name="baseFrame" value="$(arg baseFrame)"/>
+      </node>
+    </group> -->
+
+     <!-- <group if="$(eval depth_registered_processing and hw_registered_processing)"> -->
+      <!-- Publish registered XYZRGB point cloud with hardware registered input (ROS Realsense depth alignment) -->
+      <!-- <node pkg="nodelet" type="nodelet" name="points_xyzrgb_hw_registered1"
+            args="load seven_depth_utils/PointCloudXyzrgbNodelet $(arg manager) $(arg bond)" respawn="$(arg respawn)">
+        <remap from="rgb/image_rect_color"        to="$(arg camera1)/$(arg rgb)/image_raw" />
+        <remap from="rgb/camera_info"             to="$(arg camera1)/$(arg rgb)/camera_info" />
+        <remap from="depth_registered/image_rect" to="$(arg camera1)/$(arg depth_registered)/image_raw" />
+        <remap from="depth_registered/points"     to="$(arg camera1)/$(arg depth_registered_pub)/points" />
+      </node>
+    </group> -->
+
+    <!-- <group if="$(eval depth_registered_processing and hw_registered_processing)"> -->
+      <!-- Publish registered XYZRGB point cloud with hardware registered input (ROS Realsense depth alignment) -->
+      <!-- <node pkg="nodelet" type="nodelet" name="points_xyzrgb_hw_registered2"
+            args="load seven_depth_utils/PointCloudXyzrgbNodelet $(arg manager) $(arg bond)" respawn="$(arg respawn)">
+        <remap from="rgb/image_rect_color"        to="$(arg camera2)/$(arg rgb)/image_raw" />
+        <remap from="rgb/camera_info"             to="$(arg camera2)/$(arg rgb)/camera_info" />
+        <remap from="depth_registered/image_rect" to="$(arg camera2)/$(arg depth_registered)/image_raw" />
+        <remap from="depth_registered/points"     to="$(arg camera2)/$(arg depth_registered_pub)/points" />
+      </node>
+    </group> -->
+
 </launch>

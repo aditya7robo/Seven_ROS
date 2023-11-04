@@ -27,6 +27,6 @@ transform_tolerance: 0.1
 recovery_alpha_slow: 0.0
 recovery_alpha_fast: 0.0
 use_map_topic: true
-initial_pose_x: 0.0
-initial_pose_y: 0.0
+initial_pose_x: 0.10117756157047438
+initial_pose_y: 1.047507365596281
 initial_pose_z: 0.0

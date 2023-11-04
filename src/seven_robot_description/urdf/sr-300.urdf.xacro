@@ -125,11 +125,11 @@
   	</gazebo>					
 
 	<xacro:sensor_d415 parent="base_link" name="$(arg camera_name_left)" use_nominal_extrinsics="$(arg use_nominal_extrinsics)">
-	 <origin xyz="0.415 0.1178 0.022233" rpy="-1.6002679 -0.2219 -0.439"/>
+	 <origin xyz="0.3975 0.09958 0.019233" rpy="-1.5413221 -0.26 -0.439"/>
 	</xacro:sensor_d415>
 
 	<xacro:sensor_d415 parent="base_link" name="$(arg camera_name_right)" use_nominal_extrinsics="$(arg use_nominal_extrinsics)">
-	 <origin xyz="0.415 -0.0928 0.025233" rpy="-1.5413221 -0.3219 0.439"/>
+	 <origin xyz="0.4125 -0.1178 0.021233" rpy="-1.6013221 -0.26 0.439"/>
 	</xacro:sensor_d415>
   
 	

@@ -28,6 +28,7 @@ def update_device_that_supports_advanced_mode():
 						if dev.supports(rs.camera_info.name):
 								print("Found device that supports advanced mode:", dev.get_info(rs.camera_info.name))
 								advnc_mode = rs.rs400_advanced_mode(dev)
+								print("Depth Control: \n", advnc_mode.get_depth_control())
 								if advnc_mode.is_enabled():
 											print("Advanced mode enabled")
 											rospack = rospkg.RosPack()
